@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.souza.souzafood.api.controller.CidadeController;
 import com.souza.souzafood.api.controller.CozinhaController;
 import com.souza.souzafood.api.controller.EstadoController;
+import com.souza.souzafood.api.controller.FluxoPedidoController;
 import com.souza.souzafood.api.controller.FormaPagamentoController;
 import com.souza.souzafood.api.controller.PedidoController;
 import com.souza.souzafood.api.controller.RestauranteController;
@@ -44,6 +45,24 @@ public class SouzaFoodLinks {
         // pedidoModel.add(Link.of(UriTemplate.of(pedidosUrl, pageVariables), "pedidos"));
 	               return Link.of(UriTemplate.of(pedidosUrl, 
 	        	   PAGINACAO_VARIABLES.concat(filtroVariables)), "pedidos");
+	}
+	
+	public Link linkToConfirmacaoPedido(String codigoPedido, String rel) {
+		
+		return linkTo(methodOn(FluxoPedidoController.class).confirmar(codigoPedido))
+				.withRel(rel);
+	}
+
+	public Link linkToEntregaPedido(String codigoPedido, String rel) {
+		
+		return linkTo(methodOn(FluxoPedidoController.class).entregar(codigoPedido))
+				.withRel(rel); 
+	}
+	
+	public Link linkToCancelamentoPedido(String codigoPedido, String rel) {
+		
+		return linkTo(methodOn(FluxoPedidoController.class).cancelar(codigoPedido))
+				.withRel(rel);
 	}
 	
 	public Link linkToRestaurante(Long restauranteId, String rel) {

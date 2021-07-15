@@ -1,4 +1,4 @@
-package com.souza.souzafood.api.assembler;
+	package com.souza.souzafood.api.assembler;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,6 @@ public class PedidoModelAssembler
     @Autowired
     private ModelMapper modelMapper;
 
-
     @Autowired
     private SouzaFoodLinks souzaFoodLinks;
     
@@ -31,6 +30,18 @@ public class PedidoModelAssembler
         modelMapper.map(pedido, pedidoModel);
         
         pedidoModel.add(souzaFoodLinks.linkToPedidos());
+        
+        if(pedido.podeSerConfirmado()) {
+        	pedidoModel.add(souzaFoodLinks.linkToConfirmacaoPedido(pedido.getCodigo(), "confirmar"));
+        }
+        
+        if(pedido.podeSerCancelado()) {
+            pedidoModel.add(souzaFoodLinks.linkToCancelamentoPedido(pedido.getCodigo(), "cancelar"));
+        }
+        
+        if(pedido.podeSerEntregue()) {
+            pedidoModel.add(souzaFoodLinks.linkToEntregaPedido(pedido.getCodigo(), "entregar"));
+        }
         
         pedidoModel.getRestaurante().add(
         		souzaFoodLinks.linkToRestaurante(pedido.getRestaurante().getId()));
