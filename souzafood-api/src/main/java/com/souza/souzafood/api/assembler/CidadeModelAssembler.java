@@ -1,7 +1,6 @@
 package com.souza.souzafood.api.assembler;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,8 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import com.souza.souzafood.api.SouzaFoodLinks;
 import com.souza.souzafood.api.controller.CidadeController;
-import com.souza.souzafood.api.controller.EstadoController;
 import com.souza.souzafood.api.model.CidadeModel;
 import com.souza.souzafood.domain.model.Cidade;
 
@@ -21,6 +20,9 @@ public class CidadeModelAssembler extends
 	@Autowired
 	private ModelMapper modelMapper;
 
+	@Autowired
+	private SouzaFoodLinks souzaFoodLinks;
+	
 	public CidadeModelAssembler() {
 
 		super(CidadeController.class, CidadeModel.class);
@@ -28,19 +30,15 @@ public class CidadeModelAssembler extends
 
 	@Override
 	public CidadeModel toModel(Cidade cidade) {
-
-		CidadeModel cidadeModel = createModelWithId(cidade.getId(), cidade);
-
-//		https://app.algaworks.com/aulas/2166/montando-modelo-de-representacao-com-representationmodelassembler
-		modelMapper.map(cidade, cidadeModel);
-		
-		cidadeModel.add(linkTo(methodOn(CidadeController.class)
-				.listar()).withRel("cidades"));	
-		
-		cidadeModel.getEstado().add(linkTo(methodOn(EstadoController.class)
-				.buscar(cidadeModel.getEstado().getId())).withSelfRel());	
-		
-		return cidadeModel;
+	    CidadeModel cidadeModel = createModelWithId(cidade.getId(), cidade);
+	    
+	    modelMapper.map(cidade, cidadeModel);
+	    
+	    cidadeModel.add(souzaFoodLinks.linkToCidades("cidades"));
+	    
+	    cidadeModel.getEstado().add(souzaFoodLinks.linkToEstado(cidadeModel.getEstado().getId()));
+	    
+	    return cidadeModel;
 	}
 
 	@Override

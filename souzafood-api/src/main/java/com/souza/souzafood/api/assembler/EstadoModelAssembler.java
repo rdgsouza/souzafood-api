@@ -8,6 +8,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import com.souza.souzafood.api.SouzaFoodLinks;
 import com.souza.souzafood.api.controller.EstadoController;
 import com.souza.souzafood.api.model.EstadoModel;
 import com.souza.souzafood.domain.model.Estado;
@@ -19,20 +20,22 @@ public class EstadoModelAssembler
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	@Autowired
+	private SouzaFoodLinks souzaFoodLinks;
+	
 	   public EstadoModelAssembler() {
 	        super(EstadoController.class, EstadoModel.class);
 	    }
 	
-    @Override
-    public EstadoModel toModel(Estado estado) {
-        EstadoModel estadoModel = createModelWithId(estado.getId(), estado);
-        modelMapper.map(estado, estadoModel);
-        
-        estadoModel.add(linkTo(EstadoController.class).withRel("estados"));
-        
-        return estadoModel;
-    }
-	
+	   @Override
+	   public EstadoModel toModel(Estado estado) {
+	       EstadoModel estadoModel = createModelWithId(estado.getId(), estado);
+	       modelMapper.map(estado, estadoModel);
+	       
+	       estadoModel.add(souzaFoodLinks.linkToEstados("estados"));
+	       
+	       return estadoModel;
+	   }
     @Override
     public CollectionModel<EstadoModel> toCollectionModel(Iterable<? extends Estado> entities) {
         return super.toCollectionModel(entities)
