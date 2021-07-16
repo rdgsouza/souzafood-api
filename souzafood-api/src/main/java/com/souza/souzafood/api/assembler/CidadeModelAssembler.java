@@ -1,7 +1,5 @@
 package com.souza.souzafood.api.assembler;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -43,8 +41,8 @@ public class CidadeModelAssembler extends
 
 	@Override
 	public CollectionModel<CidadeModel> toCollectionModel(Iterable<? extends Cidade> entities) {
-		return super.toCollectionModel(entities)
-				.add(linkTo(CidadeController.class).withSelfRel());
+	    return super.toCollectionModel(entities)
+	            .add(souzaFoodLinks.linkToCidades());
 	}
 	
 //	public List<CidadeModel> toCollectionModel(List<Cidade> cidades) {

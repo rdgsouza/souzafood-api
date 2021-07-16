@@ -1,4 +1,4 @@
-package com.souza.souzafood.api.assembler;
+package com.souza.souzafood.api.model;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +8,11 @@ import org.springframework.stereotype.Component;
 
 import com.souza.souzafood.api.SouzaFoodLinks;
 import com.souza.souzafood.api.controller.RestauranteController;
-import com.souza.souzafood.api.model.RestauranteModel;
 import com.souza.souzafood.domain.model.Restaurante;
 
 @Component
-public class RestauranteModelAssembler 
-        extends RepresentationModelAssemblerSupport<Restaurante, RestauranteModel> {
+public class RestauranteBasicoModelAssembler 
+        extends RepresentationModelAssemblerSupport<Restaurante, RestauranteBasicoModel> {
 
     @Autowired
     private ModelMapper modelMapper;
@@ -21,13 +20,15 @@ public class RestauranteModelAssembler
     @Autowired
     private SouzaFoodLinks souzaFoodLinks;
     
-    public RestauranteModelAssembler() {
-        super(RestauranteController.class, RestauranteModel.class);
+    public RestauranteBasicoModelAssembler() {
+        super(RestauranteController.class, RestauranteBasicoModel.class);
     }
     
     @Override
-    public RestauranteModel toModel(Restaurante restaurante) {
-        RestauranteModel restauranteModel = createModelWithId(restaurante.getId(), restaurante);
+    public RestauranteBasicoModel toModel(Restaurante restaurante) {
+        RestauranteBasicoModel restauranteModel = createModelWithId(
+                restaurante.getId(), restaurante);
+        
         modelMapper.map(restaurante, restauranteModel);
         
         restauranteModel.add(souzaFoodLinks.linkToRestaurantes("restaurantes"));
@@ -35,21 +36,12 @@ public class RestauranteModelAssembler
         restauranteModel.getCozinha().add(
         		souzaFoodLinks.linkToCozinha(restaurante.getCozinha().getId()));
         
-        restauranteModel.getEndereco().getCidade().add(
-        		souzaFoodLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
-        
-        restauranteModel.add(souzaFoodLinks.linkToRestauranteFormasPagamento(restaurante.getId(), 
-                "formas-pagamento"));
-        
-        restauranteModel.add(souzaFoodLinks.linkToRestauranteResponsaveis(restaurante.getId(), 
-                "responsaveis"));
-        
         return restauranteModel;
     }
     
     @Override
-    public CollectionModel<RestauranteModel> toCollectionModel(Iterable<? extends Restaurante> entities) {
+    public CollectionModel<RestauranteBasicoModel> toCollectionModel(Iterable<? extends Restaurante> entities) {
         return super.toCollectionModel(entities)
                 .add(souzaFoodLinks.linkToRestaurantes());
     }   
-}
+}        

@@ -49,7 +49,7 @@ public class PedidoModel extends RepresentationModel<PedidoModel> {
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
 	private OffsetDateTime dataCancelamento;
 	
-	private RestauranteResumoModel restaurante;
+	private RestauranteApenasNomeModel restaurante;
 	private UsuarioModel cliente;
 	private FormaPagamentoModel formaPagamento;
 	private EnderecoModel enderecoEntrega;
