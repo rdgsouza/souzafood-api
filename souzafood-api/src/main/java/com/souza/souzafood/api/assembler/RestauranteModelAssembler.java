@@ -44,6 +44,26 @@ public class RestauranteModelAssembler
         restauranteModel.add(souzaFoodLinks.linkToRestauranteResponsaveis(restaurante.getId(), 
                 "responsaveis"));
         
+        if (restaurante.ativacaoPermitida()) {
+        	restauranteModel.add(
+        			souzaFoodLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
+        }
+
+        if (restaurante.inativacaoPermitida()) {
+        	restauranteModel.add(
+        			souzaFoodLinks.linkToRestauranteInativacao(restaurante.getId(), "inativar"));
+        }
+
+        if (restaurante.aberturaPermitida()) {
+        	restauranteModel.add(
+        			souzaFoodLinks.linkToRestauranteAbertura(restaurante.getId(), "abrir"));
+        }
+
+        if (restaurante.fechamentoPermitido()) {
+        	restauranteModel.add(
+        			souzaFoodLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
+        }
+        
         return restauranteModel;
     }
     
