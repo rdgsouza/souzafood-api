@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -48,8 +49,10 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     @Autowired
     private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
     
+    @Override
     @GetMapping
-    public ResponseEntity<List<FormaPagamentoModel>> listar(ServletWebRequest request) {
+    public ResponseEntity<CollectionModel<FormaPagamentoModel>> listar(ServletWebRequest request) {
+
 // Desabilita o filtro ShallowEtagHeaderFilter. Aula: https://www.algaworks.com/aulas/2114/implementando-requisicoes-condicionais-com-deep-etags
     	ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
     	
@@ -68,8 +71,8 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     	
         List<FormaPagamento> todasFormasPagamentos = formaPagamentoRepository.findAll();
         
-        List<FormaPagamentoModel> formasPagamentosModel = formaPagamentoModelAssembler
-        		.toCollectionModel(todasFormasPagamentos);
+        CollectionModel<FormaPagamentoModel> formasPagamentosModel = 
+        	    formaPagamentoModelAssembler.toCollectionModel(todasFormasPagamentos);
         
         return ResponseEntity.ok()
 // Sobre o .cacheControl. Aula: https://www.algaworks.com/aulas/2107/habilitando-o-cache-com-o-cabecalho-cache-control-e-a-diretiva-max-age
