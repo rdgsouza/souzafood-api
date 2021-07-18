@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.souza.souzafood.api.SouzaFoodLinks;
 import com.souza.souzafood.api.assembler.ProdutoInputDisassembler;
 import com.souza.souzafood.api.assembler.ProdutoModelAssembler;
 import com.souza.souzafood.api.model.ProdutoModel;
@@ -48,20 +50,25 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 	@Autowired
 	private ProdutoInputDisassembler produtoInputDisassembler;
 
+	@Autowired
+	private SouzaFoodLinks souzaFoodLinks;
+	
+	@Override
 	@GetMapping
-	public List<ProdutoModel> listar(@PathVariable Long restauranteId,
-			@RequestParam(required = false) boolean incluirInativos) {
-		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
-
-		List<Produto> todosProdutos = null;
-
-		if (incluirInativos) {
-			todosProdutos = produtoRepository.findTodosByRestaurante(restaurante);
-		} else {
-			todosProdutos = produtoRepository.findAtivosByRestaurante(restaurante);
-		}
-
-		return produtoModelAssembler.toCollectionModel(todosProdutos);
+	public CollectionModel<ProdutoModel> listar(@PathVariable Long restauranteId,
+	        @RequestParam(required = false, defaultValue = "false") Boolean incluirInativos) {
+	    Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
+	    
+	    List<Produto> todosProdutos = null;
+	    
+	    if (incluirInativos) {
+	        todosProdutos = produtoRepository.findTodosByRestaurante(restaurante);
+	    } else {
+	        todosProdutos = produtoRepository.findAtivosByRestaurante(restaurante);
+	    }
+	    
+	    return produtoModelAssembler.toCollectionModel(todosProdutos)
+	            .add(souzaFoodLinks.linkToProdutos(restauranteId));
 	}
 
 	@GetMapping("/{produtoId}")

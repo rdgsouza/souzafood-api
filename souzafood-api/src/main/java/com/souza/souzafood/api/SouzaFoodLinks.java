@@ -120,10 +120,23 @@ public class SouzaFoodLinks {
 				.listar(restauranteId)).withRel(rel);
 	}
 	
-	public Link linkToResponsaveisRestaurante(Long restauranteId) {
+	public Link linkToRestauranteResponsaveis(Long restauranteId) {
 		return linkToRestauranteResponsaveis(restauranteId, IanaLinkRelations.SELF.value());
 	}
 
+
+	public Link linkToRestauranteResponsavelDesassociacao(
+			Long restauranteId, Long usuarioId, String rel) {
+
+		    return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
+		            .desassociar(restauranteId, usuarioId)).withRel(rel);
+		}
+
+	public Link linkToRestauranteResponsavelAssociacao(Long restauranteId, String rel) {
+		    return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
+		            .associar(restauranteId, null)).withRel(rel);
+		}
+	
 	public Link linkToRestauranteFormasPagamento(Long restauranteId, String rel) {
 	    return linkTo(methodOn(RestauranteFormaPagamentoController.class)
 	            .listar(restauranteId)).withRel(rel);
@@ -138,6 +151,13 @@ public class SouzaFoodLinks {
 		
 		return linkTo(methodOn(RestauranteFormaPagamentoController.class)
 				.desassociar(restauranteId, formaPagamentoId)).withRel(rel);
+	}
+	
+	public Link linkToRestauranteFormaPagamentoAssociacao(
+			Long restauranteId, String rel) {
+		
+		return linkTo(methodOn(RestauranteFormaPagamentoController.class)
+				.associar(restauranteId, null)).withRel(rel);
 	}
 	
 	public Link linkToFormasPagamento(String rel) {
@@ -200,6 +220,15 @@ public class SouzaFoodLinks {
 	public Link linkToProduto(Long restauranteId, Long produtoId) {
 	    return linkToProduto(restauranteId, produtoId, IanaLinkRelations.SELF.value());
 	}
+	
+	public Link linkToProdutos(Long restauranteId, String rel) {
+	    return linkTo(methodOn(RestauranteProdutoController.class)
+	            .listar(restauranteId, null)).withRel(rel);
+	}
+
+	public Link linkToProdutos(Long restauranteId) {
+	    return linkToProdutos(restauranteId, IanaLinkRelations.SELF.value());
+	}
 
 	public Link linkToCozinha(Long cozinhaId, String rel) {
 	    return linkTo(methodOn(CozinhaController.class)
@@ -221,7 +250,7 @@ public class SouzaFoodLinks {
 	public Link linkToRestauranteAbertura(Long restauranteId, String rel) {
 	    return linkTo(methodOn(RestauranteController.class)
 	            .abrir(restauranteId)).withRel(rel);
-	}
+	}	
 
 	public Link linkToRestauranteFechamento(Long restauranteId, String rel) {
 	    return linkTo(methodOn(RestauranteController.class)
@@ -237,6 +266,5 @@ public class SouzaFoodLinks {
 	    return linkTo(methodOn(RestauranteController.class)
 	            .ativar(restauranteId)).withRel(rel);
 	}
-	
 	
 }

@@ -1,28 +1,38 @@
 package com.souza.souzafood.api.assembler;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import com.souza.souzafood.api.SouzaFoodLinks;
+import com.souza.souzafood.api.controller.RestauranteProdutoController;
 import com.souza.souzafood.api.model.ProdutoModel;
 import com.souza.souzafood.domain.model.Produto;
 
 @Component
-public class ProdutoModelAssembler {
+public class ProdutoModelAssembler 
+        extends RepresentationModelAssemblerSupport<Produto, ProdutoModel> {
 
     @Autowired
     private ModelMapper modelMapper;
     
-    public ProdutoModel toModel(Produto produto) {
-        return modelMapper.map(produto, ProdutoModel.class);
+    @Autowired
+    private SouzaFoodLinks souzaFoodLinks;
+    
+    public ProdutoModelAssembler() {
+        super(RestauranteProdutoController.class, ProdutoModel.class);
     }
     
-    public List<ProdutoModel> toCollectionModel(List<Produto> produtos) {
-        return produtos.stream()
-                .map(produto -> toModel(produto))
-                .collect(Collectors.toList());
+    @Override
+    public ProdutoModel toModel(Produto produto) {
+        ProdutoModel produtoModel = createModelWithId(
+                produto.getId(), produto, produto.getRestaurante().getId());
+        
+        modelMapper.map(produto, produtoModel);
+        
+        produtoModel.add(souzaFoodLinks.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
+        
+        return produtoModel;
     }   
 }            

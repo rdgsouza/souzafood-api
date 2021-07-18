@@ -32,37 +32,42 @@ public class RestauranteModelAssembler
         
         restauranteModel.add(souzaFoodLinks.linkToRestaurantes("restaurantes"));
         
+        if (restaurante.ativacaoPermitida()) {
+            restauranteModel.add(
+            		souzaFoodLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
+        }
+
+        if (restaurante.inativacaoPermitida()) {
+            restauranteModel.add(
+            		souzaFoodLinks.linkToRestauranteInativacao(restaurante.getId(), "inativar"));
+        }
+
+        if (restaurante.aberturaPermitida()) {
+            restauranteModel.add(
+            		souzaFoodLinks.linkToRestauranteAbertura(restaurante.getId(), "abrir"));
+        }
+
+        if (restaurante.fechamentoPermitido()) {
+            restauranteModel.add(
+            		souzaFoodLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
+        }
+        
+        restauranteModel.add(souzaFoodLinks.linkToProdutos(restaurante.getId(), "produtos"));
+        
         restauranteModel.getCozinha().add(
         		souzaFoodLinks.linkToCozinha(restaurante.getCozinha().getId()));
         
-        restauranteModel.getEndereco().getCidade().add(
-        		souzaFoodLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
+        if (restauranteModel.getEndereco() != null 
+                && restauranteModel.getEndereco().getCidade() != null) {
+            restauranteModel.getEndereco().getCidade().add(
+            		souzaFoodLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
+        }
         
         restauranteModel.add(souzaFoodLinks.linkToRestauranteFormasPagamento(restaurante.getId(), 
                 "formas-pagamento"));
         
         restauranteModel.add(souzaFoodLinks.linkToRestauranteResponsaveis(restaurante.getId(), 
                 "responsaveis"));
-        
-        if (restaurante.ativacaoPermitida()) {
-        	restauranteModel.add(
-        			souzaFoodLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
-        }
-
-        if (restaurante.inativacaoPermitida()) {
-        	restauranteModel.add(
-        			souzaFoodLinks.linkToRestauranteInativacao(restaurante.getId(), "inativar"));
-        }
-
-        if (restaurante.aberturaPermitida()) {
-        	restauranteModel.add(
-        			souzaFoodLinks.linkToRestauranteAbertura(restaurante.getId(), "abrir"));
-        }
-
-        if (restaurante.fechamentoPermitido()) {
-        	restauranteModel.add(
-        			souzaFoodLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
-        }
         
         return restauranteModel;
     }
