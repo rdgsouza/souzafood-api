@@ -1,6 +1,6 @@
 package com.souza.souzafood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.souza.souzafood.api.exceptionhandler.Problem;
 import com.souza.souzafood.api.model.GrupoModel;
@@ -15,14 +15,9 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = "Grupos")
 public interface GrupoControllerOpenApi {
 
-    @ApiOperation("Lista os grupos")
-    public List<GrupoModel> listar();
+	@ApiOperation("Lista os grupos")
+	CollectionModel<GrupoModel> listar();
     
-    @ApiOperation("Busca um grupo por ID")
-    @ApiResponses({
-        @ApiResponse(code = 400, message = "ID da grupo inválido", response = Problem.class),
-        @ApiResponse(code = 404, message = "Grupo não encontrado", response = Problem.class)
-    })
     public GrupoModel buscar(
     		@ApiParam(value = "ID de um grupo", example = "1", required = true)
             Long grupoId);

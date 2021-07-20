@@ -48,7 +48,7 @@ public class CadastroUsuarioService {
     }
     
 	@Transactional
-	public void desassociarPermissao(Long usuarioId, Long grupoId) {
+	public void desassociarGrupo(Long usuarioId, Long grupoId) {
 		Usuario usuario = buscarOuFalhar(usuarioId);
 		Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
 
@@ -56,7 +56,7 @@ public class CadastroUsuarioService {
 	}
 
 	@Transactional
-	public void associarPermissao(Long usuarioId, Long grupoId) {
+	public void associarGrupo(Long usuarioId, Long grupoId) {
 		Usuario usuario = buscarOuFalhar(usuarioId);
 		Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
 

@@ -16,10 +16,14 @@ import com.souza.souzafood.api.controller.CozinhaController;
 import com.souza.souzafood.api.controller.EstadoController;
 import com.souza.souzafood.api.controller.FluxoPedidoController;
 import com.souza.souzafood.api.controller.FormaPagamentoController;
+import com.souza.souzafood.api.controller.GrupoController;
+import com.souza.souzafood.api.controller.GrupoPermissaoController;
 import com.souza.souzafood.api.controller.PedidoController;
+import com.souza.souzafood.api.controller.PermissaoController;
 import com.souza.souzafood.api.controller.RestauranteController;
 import com.souza.souzafood.api.controller.RestauranteFormaPagamentoController;
 import com.souza.souzafood.api.controller.RestauranteProdutoController;
+import com.souza.souzafood.api.controller.RestauranteProdutoFotoController;
 import com.souza.souzafood.api.controller.RestauranteUsuarioResponsavelController;
 import com.souza.souzafood.api.controller.UsuarioController;
 import com.souza.souzafood.api.controller.UsuarioGrupoController;
@@ -106,6 +110,41 @@ public class SouzaFoodLinks {
 	    return linkToUsuarios(IanaLinkRelations.SELF.value());
 	}
 
+	public Link linkToGrupos(String rel) {
+	    return linkTo(GrupoController.class).withRel(rel);
+	}
+
+	public Link linkToGrupos() {
+	    return linkToGrupos(IanaLinkRelations.SELF.value());
+	}
+
+	public Link linkToGrupoPermissoes(Long grupoId, String rel) {
+	    return linkTo(methodOn(GrupoPermissaoController.class)
+	            .listar(grupoId)).withRel(rel);
+	}    
+	
+	public Link linkToPermissoes(String rel) {
+	    return linkTo(PermissaoController.class).withRel(rel);
+	}
+
+	public Link linkToPermissoes() {
+	    return linkToPermissoes(IanaLinkRelations.SELF.value());
+	}
+
+	public Link linkToGrupoPermissoes(Long grupoId) {
+	    return linkToGrupoPermissoes(grupoId, IanaLinkRelations.SELF.value());
+	}
+
+	public Link linkToGrupoPermissaoAssociacao(Long grupoId, String rel) {
+	    return linkTo(methodOn(GrupoPermissaoController.class)
+	            .associar(grupoId, null)).withRel(rel);
+	}
+
+	public Link linkToGrupoPermissaoDesassociacao(Long grupoId, Long permissaoId, String rel) {
+	    return linkTo(methodOn(GrupoPermissaoController.class)
+	            .desassociar(grupoId, permissaoId)).withRel(rel);
+	}
+	
 	public Link linkToGruposUsuario(Long usuarioId, String rel) {
 	    return linkTo(methodOn(UsuarioGrupoController.class)
 	            .listar(usuarioId)).withRel(rel);
@@ -115,6 +154,16 @@ public class SouzaFoodLinks {
 	    return linkToGruposUsuario(usuarioId, IanaLinkRelations.SELF.value());
 	}
 
+	public Link linkToUsuarioGrupoAssociacao(Long usuarioId, String rel) {
+	    return linkTo(methodOn(UsuarioGrupoController.class)
+	            .associar(usuarioId, null)).withRel(rel);
+	}
+
+	public Link linkToUsuarioGrupoDesassociacao(Long usuarioId, Long grupoId, String rel) {
+	    return linkTo(methodOn(UsuarioGrupoController.class)
+	            .desassociar(usuarioId, grupoId)).withRel(rel);
+	}        
+	
 	public Link linkToRestauranteResponsaveis(Long restauranteId, String rel) {
 		return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
 				.listar(restauranteId)).withRel(rel);
@@ -230,6 +279,15 @@ public class SouzaFoodLinks {
 	    return linkToProdutos(restauranteId, IanaLinkRelations.SELF.value());
 	}
 
+	public Link linkToFotoProduto(Long restauranteId, Long produtoId, String rel) {
+	    return linkTo(methodOn(RestauranteProdutoFotoController.class)
+	            .buscar(restauranteId, produtoId)).withRel(rel);
+	}
+
+	public Link linkToFotoProduto(Long restauranteId, Long produtoId) {
+	    return linkToFotoProduto(restauranteId, produtoId, IanaLinkRelations.SELF.value());
+	}
+	
 	public Link linkToCozinha(Long cozinhaId, String rel) {
 	    return linkTo(methodOn(CozinhaController.class)
 	            .buscar(cozinhaId)).withRel(rel);

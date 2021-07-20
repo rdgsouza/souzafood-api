@@ -1,0 +1,35 @@
+package com.souza.souzafood.api.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.souza.souzafood.api.assembler.PermissaoModelAssembler;
+import com.souza.souzafood.api.model.PermissaoModel;
+import com.souza.souzafood.api.openapi.controller.PermissaoControllerOpenApi;
+import com.souza.souzafood.domain.model.Permissao;
+import com.souza.souzafood.domain.repository.PermissaoRepository;
+
+@RestController
+@RequestMapping(path = "/permissoes", produces = MediaType.APPLICATION_JSON_VALUE)
+public class PermissaoController implements PermissaoControllerOpenApi {
+
+    @Autowired
+    private PermissaoRepository permissaoRepository;
+    
+    @Autowired
+    private PermissaoModelAssembler permissaoModelAssembler;
+    
+    @Override
+    @GetMapping
+    public CollectionModel<PermissaoModel> listar() {
+        List<Permissao> todasPermissoes = permissaoRepository.findAll();
+        
+        return permissaoModelAssembler.toCollectionModel(todasPermissoes);
+    }   
+}        

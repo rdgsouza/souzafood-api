@@ -32,7 +32,11 @@ public class ProdutoModelAssembler
         modelMapper.map(produto, produtoModel);
         
         produtoModel.add(souzaFoodLinks.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
+
+        produtoModel.add(souzaFoodLinks.linkToFotoProduto(
+                produto.getRestaurante().getId(), produto.getId(), "foto"));
         
         return produtoModel;
-    }   
-}            
+    }          
+
+ }
