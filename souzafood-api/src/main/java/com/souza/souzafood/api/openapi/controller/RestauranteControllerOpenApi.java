@@ -30,7 +30,7 @@ public interface RestauranteControllerOpenApi {
 	})
 //		@JsonView(RestauranteView.Resumo.class)
 	CollectionModel<RestauranteBasicoModel> listar();
-
+ 
 	@ApiIgnore // https://app.algaworks.com/aulas/2203/removendo-modelo-de-representacao-inutilizado-da-documentacao
 	@ApiOperation(value = "Lista restaurantes", hidden = true)
 	CollectionModel<RestauranteApenasNomeModel> listarApenasNomes();
