@@ -3,6 +3,7 @@ package com.souza.souzafood.api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.souza.souzafood.api.SouzaFoodLinks;
 import com.souza.souzafood.api.openapi.controller.EstatisticasControllerOpenApi;
 import com.souza.souzafood.domain.filter.VendaDiariaFilter;
 import com.souza.souzafood.domain.model.dto.VendaDiaria;
@@ -25,7 +27,20 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
 	private VendaQueryService vendaQueryService;
 	
 	@Autowired
+	private SouzaFoodLinks souzaFoodLinks;
+	
+	@Autowired
 	private VendaReportService vendaReportService;
+	
+	@Override
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public EstatisticasModel estatisticas() {
+	    var estatisticasModel = new EstatisticasModel();
+	    
+	    estatisticasModel.add(souzaFoodLinks.linkToEstatisticasVendasDiarias("vendas-diarias"));
+	    
+	    return estatisticasModel;
+	}    
 	
 	@GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro,
@@ -47,4 +62,9 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
 				.headers(headers)
 				.body(bytesPdf);
 	}
+	
+//	https://app.algaworks.com/aulas/2192/desafio-implementando-endpoint-com-links-de-recursos-de-estatisticas
+	public static class EstatisticasModel extends RepresentationModel<EstatisticasModel> {
+	}
+	
 }

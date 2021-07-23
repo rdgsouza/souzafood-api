@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.souza.souzafood.api.controller.CidadeController;
 import com.souza.souzafood.api.controller.CozinhaController;
 import com.souza.souzafood.api.controller.EstadoController;
+import com.souza.souzafood.api.controller.EstatisticasController;
 import com.souza.souzafood.api.controller.FluxoPedidoController;
 import com.souza.souzafood.api.controller.FormaPagamentoController;
 import com.souza.souzafood.api.controller.GrupoController;
@@ -324,5 +325,24 @@ public class SouzaFoodLinks {
 	    return linkTo(methodOn(RestauranteController.class)
 	            .ativar(restauranteId)).withRel(rel);
 	}
+	
+	public Link linkToEstatisticas(String rel) {
+	    return linkTo(EstatisticasController.class).withRel(rel);
+	}
+
+	public Link linkToEstatisticasVendasDiarias(String rel) {
+	    TemplateVariables filtroVariables = new TemplateVariables(
+	            new TemplateVariable("restauranteId", VariableType.REQUEST_PARAM),
+	            new TemplateVariable("dataCriacaoInicio", VariableType.REQUEST_PARAM),
+	            new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM),
+	            new TemplateVariable("timeOffset", VariableType.REQUEST_PARAM));
+	    
+	    String pedidosUrl = linkTo(methodOn(EstatisticasController.class)
+	            .consultarVendasDiarias(null, null)).toUri().toString();
+//Obs: A forma de usar o UriTemplate foi depreciado no conteudo de apoio estar dessa forma: return new Link(UriTemplate.of(pedidosUrl, filtroVariables), rel);
+//Obs2: Resolução para resolver essa depreciação: https://app.algaworks.com/forum/topicos/84494/link-uritemplate-template-string-rel-depreciado
+	    return Link.of(UriTemplate.of(pedidosUrl, filtroVariables), rel);
+
+	}   
 	
 }

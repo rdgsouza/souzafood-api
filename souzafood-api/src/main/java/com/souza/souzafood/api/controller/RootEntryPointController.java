@@ -30,6 +30,7 @@ public class RootEntryPointController {
 		rootEntryPointModel.add(souzaFoodLinks.linkToFormasPagamento("formas-pagamentos"));
 		rootEntryPointModel.add(souzaFoodLinks.linkToEstados("estados"));
 		rootEntryPointModel.add(souzaFoodLinks.linkToCidades("cidades"));
+		rootEntryPointModel.add(souzaFoodLinks.linkToEstatisticas("estatisticas"));
 
 		return rootEntryPointModel;
 	}
