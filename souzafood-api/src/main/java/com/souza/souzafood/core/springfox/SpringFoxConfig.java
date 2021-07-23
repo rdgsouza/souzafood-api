@@ -15,6 +15,9 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Links;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -24,11 +27,28 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.fasterxml.classmate.TypeResolver;
 import com.google.common.base.Predicates;
 import com.souza.souzafood.api.exceptionhandler.Problem;
+import com.souza.souzafood.api.model.CidadeModel;
 import com.souza.souzafood.api.model.CozinhaModel;
+import com.souza.souzafood.api.model.EstadoModel;
+import com.souza.souzafood.api.model.FormaPagamentoModel;
+import com.souza.souzafood.api.model.GrupoModel;
 import com.souza.souzafood.api.model.PedidoResumoModel;
+import com.souza.souzafood.api.model.PermissaoModel;
+import com.souza.souzafood.api.model.ProdutoModel;
+import com.souza.souzafood.api.model.RestauranteBasicoModel;
+import com.souza.souzafood.api.model.UsuarioModel;
+import com.souza.souzafood.api.openapi.model.CidadesModelOpenApi;
 import com.souza.souzafood.api.openapi.model.CozinhasModelOpenApi;
+import com.souza.souzafood.api.openapi.model.EstadosModelOpenApi;
+import com.souza.souzafood.api.openapi.model.FormasPagamentoModelOpenApi;
+import com.souza.souzafood.api.openapi.model.GruposModelOpenApi;
+import com.souza.souzafood.api.openapi.model.LinskModelOpenApi;
 import com.souza.souzafood.api.openapi.model.PageableModelOpenApi;
 import com.souza.souzafood.api.openapi.model.PedidosResumoModelOpenApi;
+import com.souza.souzafood.api.openapi.model.PermissoesModelOpenApi;
+import com.souza.souzafood.api.openapi.model.ProdutosModelOpenApi;
+import com.souza.souzafood.api.openapi.model.RestaurantesBasicoModelOpenApi;
+import com.souza.souzafood.api.openapi.model.UsuariosModelOpenApi;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -88,14 +108,41 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 	            .ignoredParameterTypes(ServletWebRequest.class,
 	            		URL.class, URI.class, URLStreamHandler.class, Resource.class, 
 	            		File.class, InputStream.class, InputStreamResource.class) //https://app.algaworks.com/aulas/2138/ignorando-tipos-de-parametros-de-operacoes-na-documentacao
-	            .directModelSubstitute(Pageable.class, PageableModelOpenApi.class
-	            		)
+	            .directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+	            .directModelSubstitute(Links.class, LinskModelOpenApi.class)
 	            .alternateTypeRules(AlternateTypeRules.newRule(
-	            		typeResolver.resolve(Page.class, CozinhaModel.class), 
+	            		typeResolver.resolve(PagedModel.class, CozinhaModel.class), 
 	            		CozinhasModelOpenApi.class)) //https://app.algaworks.com/aulas/2136/corrigindo-documentacao-com-substituicao-de-page
 	            .alternateTypeRules(AlternateTypeRules.newRule( //https://app.algaworks.com/aulas/2142/desafio-descrevendo-documentacao-de-endpoints-de-pedidos
 	                    typeResolver.resolve(Page.class, PedidoResumoModel.class),
 	                    PedidosResumoModelOpenApi.class))
+	            .alternateTypeRules(AlternateTypeRules.newRule( //https://app.algaworks.com/aulas/2142/desafio-descrevendo-documentacao-de-endpoints-de-pedidos
+	                    typeResolver.resolve(CollectionModel.class, CidadeModel.class), //https://app.algaworks.com/aulas/2195/corrigindo-a-documentacao-dos-endpoints-de-cidades	
+	                    CidadesModelOpenApi.class))
+	            .alternateTypeRules(AlternateTypeRules.newRule(
+	                    typeResolver.resolve(CollectionModel.class, EstadoModel.class),
+	                    EstadosModelOpenApi.class))
+	            .alternateTypeRules(AlternateTypeRules.newRule(
+	            	    typeResolver.resolve(CollectionModel.class, FormaPagamentoModel.class),
+	            	    FormasPagamentoModelOpenApi.class))
+	            .alternateTypeRules(AlternateTypeRules.newRule(
+	            	    typeResolver.resolve(CollectionModel.class, GrupoModel.class),
+	            	    GruposModelOpenApi.class))
+	            .alternateTypeRules(AlternateTypeRules.newRule(
+	                    typeResolver.resolve(CollectionModel.class, PermissaoModel.class),
+	                    PermissoesModelOpenApi.class))
+	           	.alternateTypeRules(AlternateTypeRules.newRule(
+	            	    typeResolver.resolve(PagedModel.class, PedidoResumoModel.class),
+	            	    PedidosResumoModelOpenApi.class))
+	           	.alternateTypeRules(AlternateTypeRules.newRule(
+	            	    typeResolver.resolve(CollectionModel.class, ProdutoModel.class),
+	            	    ProdutosModelOpenApi.class))
+	           	.alternateTypeRules(AlternateTypeRules.newRule(
+	            	    typeResolver.resolve(CollectionModel.class, RestauranteBasicoModel.class),
+	            	    RestaurantesBasicoModelOpenApi.class))
+	        	.alternateTypeRules(AlternateTypeRules.newRule(
+	                    typeResolver.resolve(CollectionModel.class, UsuarioModel.class),
+	                    UsuariosModelOpenApi.class))
 	            .apiInfo(apiInfo())
 				.tags(new Tag("Cidades", "Gerencia as cidades"),
 				        new Tag("Grupos", "Gerencia os grupos de usuários"),
