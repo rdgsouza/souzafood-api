@@ -3,8 +3,8 @@ package com.souza.souzafood.api.openapi.controller;
 import org.springframework.hateoas.CollectionModel;
 
 import com.souza.souzafood.api.exceptionhandler.Problem;
-import com.souza.souzafood.api.model.ProdutoModel;
 import com.souza.souzafood.api.model.input.ProdutoInput;
+import com.souza.souzafood.api.v1.model.ProdutoModel;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

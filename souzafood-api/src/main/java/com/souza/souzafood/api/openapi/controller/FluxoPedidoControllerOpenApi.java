@@ -3,7 +3,7 @@ package com.souza.souzafood.api.openapi.controller;
 import org.springframework.http.ResponseEntity;
 
 import com.souza.souzafood.api.exceptionhandler.Problem;
-import com.souza.souzafood.api.model.PedidoStatusResumoModel;
+import com.souza.souzafood.api.v1.model.PedidoStatusResumoModel;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

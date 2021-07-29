@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-import com.souza.souzafood.api.controller.EstatisticasController.EstatisticasModel;
+import com.souza.souzafood.api.v1.controller.EstatisticasController.EstatisticasModel;
 import com.souza.souzafood.domain.filter.VendaDiariaFilter;
 import com.souza.souzafood.domain.model.dto.VendaDiaria;
 

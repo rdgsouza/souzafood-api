@@ -28,7 +28,6 @@ public class ResourceUriHelper {
 				.getResponse();
 
 		response.setHeader(HttpHeaders.LOCATION, uri.toString());
-
 	}
 
 }

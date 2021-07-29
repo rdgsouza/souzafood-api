@@ -4,7 +4,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 
 import com.souza.souzafood.api.exceptionhandler.Problem;
-import com.souza.souzafood.api.model.FormaPagamentoModel;
+import com.souza.souzafood.api.v1.model.FormaPagamentoModel;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

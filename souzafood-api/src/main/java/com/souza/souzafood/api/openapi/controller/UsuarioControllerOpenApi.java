@@ -3,10 +3,10 @@ package com.souza.souzafood.api.openapi.controller;
 import org.springframework.hateoas.CollectionModel;
 
 import com.souza.souzafood.api.exceptionhandler.Problem;
-import com.souza.souzafood.api.model.UsuarioModel;
 import com.souza.souzafood.api.model.input.SenhaInput;
 import com.souza.souzafood.api.model.input.UsuarioComSenhaInput;
 import com.souza.souzafood.api.model.input.UsuarioInput;
+import com.souza.souzafood.api.v1.model.UsuarioModel;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

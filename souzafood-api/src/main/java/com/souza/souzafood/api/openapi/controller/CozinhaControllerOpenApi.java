@@ -4,8 +4,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
 import com.souza.souzafood.api.exceptionhandler.Problem;
-import com.souza.souzafood.api.model.CozinhaModel;
 import com.souza.souzafood.api.model.input.CozinhaInput;
+import com.souza.souzafood.api.v1.model.CozinhaModel;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

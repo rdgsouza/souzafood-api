@@ -8,9 +8,9 @@ import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.souza.souzafood.api.exceptionhandler.Problem;
-import com.souza.souzafood.api.model.FotoProdutoModel;
-import com.souza.souzafood.api.model.UrlFotoProdutoModel;
 import com.souza.souzafood.api.model.input.FotoProdutoInput;
+import com.souza.souzafood.api.v1.model.FotoProdutoModel;
+import com.souza.souzafood.api.v1.model.UrlFotoProdutoModel;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

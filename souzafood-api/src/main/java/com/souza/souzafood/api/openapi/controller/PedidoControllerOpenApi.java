@@ -4,9 +4,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
 import com.souza.souzafood.api.exceptionhandler.Problem;
-import com.souza.souzafood.api.model.PedidoModel;
-import com.souza.souzafood.api.model.PedidoResumoModel;
 import com.souza.souzafood.api.model.input.PedidoInput;
+import com.souza.souzafood.api.v1.model.PedidoModel;
+import com.souza.souzafood.api.v1.model.PedidoResumoModel;
 import com.souza.souzafood.domain.filter.PedidoFilter;
 
 import io.swagger.annotations.Api;

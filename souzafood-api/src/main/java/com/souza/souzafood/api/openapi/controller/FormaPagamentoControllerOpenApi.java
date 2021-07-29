@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import com.souza.souzafood.api.exceptionhandler.Problem;
-import com.souza.souzafood.api.model.FormaPagamentoModel;
 import com.souza.souzafood.api.model.input.FormaPagamentoInput;
 import com.souza.souzafood.api.openapi.model.FormasPagamentoModelOpenApi;
+import com.souza.souzafood.api.v1.model.FormaPagamentoModel;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

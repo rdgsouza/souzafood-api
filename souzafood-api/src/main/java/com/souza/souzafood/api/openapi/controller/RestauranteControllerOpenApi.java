@@ -6,10 +6,10 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 
 import com.souza.souzafood.api.exceptionhandler.Problem;
-import com.souza.souzafood.api.model.RestauranteApenasNomeModel;
-import com.souza.souzafood.api.model.RestauranteBasicoModel;
-import com.souza.souzafood.api.model.RestauranteModel;
 import com.souza.souzafood.api.model.input.RestauranteInput;
+import com.souza.souzafood.api.v1.model.RestauranteApenasNomeModel;
+import com.souza.souzafood.api.v1.model.RestauranteBasicoModel;
+import com.souza.souzafood.api.v1.model.RestauranteModel;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

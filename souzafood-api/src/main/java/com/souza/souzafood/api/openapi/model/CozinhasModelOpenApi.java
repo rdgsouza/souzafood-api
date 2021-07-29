@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.hateoas.Links;
 
-import com.souza.souzafood.api.model.CozinhaModel;
+import com.souza.souzafood.api.v1.model.CozinhaModel;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
