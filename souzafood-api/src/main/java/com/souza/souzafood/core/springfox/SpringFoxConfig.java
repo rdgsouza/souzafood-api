@@ -49,6 +49,10 @@ import com.souza.souzafood.api.v1.model.PermissaoModel;
 import com.souza.souzafood.api.v1.model.ProdutoModel;
 import com.souza.souzafood.api.v1.model.RestauranteBasicoModel;
 import com.souza.souzafood.api.v1.model.UsuarioModel;
+import com.souza.souzafood.api.v2.model.CidadeModelV2;
+import com.souza.souzafood.api.v2.model.CozinhaModelV2;
+import com.souza.souzafood.api.v2.openapi.mode.CidadesModelV2OpenApi;
+import com.souza.souzafood.api.v2.openapi.mode.CozinhasModelV2OpenApi;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -74,7 +78,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 
 //	Aula: https://www.algaworks.com/aulas/2120/selecionando-os-endpoints-da-api-para-gerar-a-documentacao
 	@Bean
-	public Docket apiDocket() {
+	public Docket apiDocketV1() {
 //		Class[] clazz = {Cidade.class};//Você pode fazer com que o swagger não faça o escaneamento de
 //		uma classe para não aparecer na documentação da OpenApi da sua API. Você pode colocar mais de uma classe no Array
 //		e em seguida acrescentar o .ignoredParameterTypes abaixo
@@ -83,9 +87,10 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 		var typeResolver = new TypeResolver();  
 		
 		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("V1")
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.souza.souzafood.api"))
-				.paths(PathSelectors.any())//Não precisava colocar o any porque quando não coloca por
+				.paths(PathSelectors.ant("/v1/**"))
 //				padrão ele ja seleciona todos os controladores referente ao pacote acima deixamos apenas por referencia
 //				.paths(PathSelectors.ant("/restaurantes/*")) //Seleciona apenas os contraladores com o nome 'restaurantes' 'barra' 'qualquer coisa'.	 
 				.paths(Predicates.not(PathSelectors.ant("/home/rodrigo/Documents/catalago/*"))) //Caso queira ocultar um controlador no mapeamento da documentação
@@ -143,7 +148,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 	        	.alternateTypeRules(AlternateTypeRules.newRule(
 	                    typeResolver.resolve(CollectionModel.class, UsuarioModel.class),
 	                    UsuariosModelOpenApi.class))
-	            .apiInfo(apiInfo())
+	            .apiInfo(apiInfoV1())
 				.tags(new Tag("Cidades", "Gerencia as cidades"),
 				        new Tag("Grupos", "Gerencia os grupos de usuários"),
 				        new Tag("Cozinhas", "Gerencia as cozinhas"),
@@ -157,6 +162,42 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				        new Tag("Permissões", "Gerencia as permissões"));
  
 //				.ignoredParameterTypes(clazz);	         
+	}
+	
+//	Aula: https://www.algaworks.com/aulas/2120/selecionando-os-endpoints-da-api-para-gerar-a-documentacao
+
+	@Bean
+	public Docket apiDocketV2() {
+		var typeResolver = new TypeResolver();  
+		
+		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("V2")
+				.select()
+				.apis(RequestHandlerSelectors.basePackage("com.souza.souzafood.api"))
+				.paths(PathSelectors.ant("/v2/**"))
+				.paths(Predicates.not(PathSelectors.ant("/home/rodrigo/Documents/catalago/*")))
+				.build()
+				.useDefaultResponseMessages(false)
+				.globalResponseMessage(RequestMethod.GET, globalGetResponseMessages())
+				.globalResponseMessage(RequestMethod.POST, globalPostPutResponseMessages())
+	            .globalResponseMessage(RequestMethod.PUT, globalPostPutResponseMessages())
+	            .globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessages())
+	            .additionalModels(typeResolver.resolve(Problem.class))
+	            .ignoredParameterTypes(ServletWebRequest.class,
+	            		URL.class, URI.class, URLStreamHandler.class, Resource.class, 
+	            		File.class, InputStream.class, InputStreamResource.class) 
+	            .directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+	            .directModelSubstitute(Links.class, LinskModelOpenApi.class)
+	            .alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(PagedModel.class, CozinhaModelV2.class),
+						CozinhasModelV2OpenApi.class))
+	            
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(CollectionModel.class, CidadeModelV2.class),
+						CidadesModelV2OpenApi.class))
+	            .apiInfo(apiInfoV2())
+	            .tags(new Tag("Cidades", "Gerencia as cidades"),
+	                    new Tag("Cozinhas", "Gerencia as cozinhas"));
 	}
 	
 //	Aula: https://app.algaworks.com/aulas/2127/descrevendo-codigos-de-status-de-respostas-de-forma-global
@@ -216,13 +257,23 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                  .build()
 			);
 	}
-	
 
-	private ApiInfo apiInfo() {
+	private ApiInfo apiInfoV1() {
+		return new ApiInfoBuilder()
+				.title("SouzaFood API (Depreciada) ")
+				.description("API aberta para clientes e restaurantes.<br>"
+						+ "<strong>Essa versão da API está depreciada e deixará de existir a partir de 01/01/2022."
+						+ "Use a versão mas atual da API.")
+				.version("1")
+				.contact(new Contact("SouzaFood", "https://www.souzafood.com", "contato@souzafood.com"))
+				.build();
+	}
+	
+	private ApiInfo apiInfoV2() {
 		return new ApiInfoBuilder()
 				.title("SouzaFood API")
 				.description("API aberta para clientes e restaurantes")
-				.version("1")
+				.version("2")
 				.contact(new Contact("SouzaFood", "https://www.souzafood.com", "contato@souzafood.com"))
 				.build();
 	}

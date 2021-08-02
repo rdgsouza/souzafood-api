@@ -7,6 +7,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
 
 import com.souza.souzafood.api.v2.controller.CidadeControllerV2;
+import com.souza.souzafood.api.v2.controller.CozinhaControllerV2;
 
 @Component
 public class SouzaFoodLinksV2 {
@@ -19,4 +20,11 @@ public class SouzaFoodLinksV2 {
 		return linkToCidades(IanaLinkRelations.SELF.value());
 	}
 
+	public Link linkToCozinhas(String rel) {
+	    return linkTo(CozinhaControllerV2.class).withRel(rel);
+	}
+
+	public Link linkToCozinhas() {
+	    return linkToCozinhas(IanaLinkRelations.SELF.value());
+	}
 }

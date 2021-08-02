@@ -21,7 +21,7 @@ import com.souza.souzafood.domain.model.Restaurante;
 import com.souza.souzafood.domain.service.CadastroRestauranteService;
 
 @RestController
-@RequestMapping(path = "/restaurantes/{restauranteId}/formas-pagamento",
+@RequestMapping(path = "/v1/restaurantes/{restauranteId}/formas-pagamento",
 produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteFormaPagamentoController implements RestauranteFormaPagamentoControllerOpenApi {
 

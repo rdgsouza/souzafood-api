@@ -21,7 +21,7 @@ import com.souza.souzafood.domain.model.Grupo;
 import com.souza.souzafood.domain.service.CadastroGrupoService;
 
 @RestController
-@RequestMapping(path = "/grupos/{grupoId}/permissoes",
+@RequestMapping(path = "/v1/grupos/{grupoId}/permissoes",
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi {
 

@@ -20,10 +20,13 @@ import com.souza.souzafood.domain.service.CatalagoFotoProdutoService;
 import com.souza.souzafood.domain.service.FotoStorageService;
 import com.souza.souzafood.domain.service.FotoStorageService.FotoRecuperada;
 
-//Solução implementada para listar fotos de todos os produos de um restaurante
+import springfox.documentation.annotations.ApiIgnore;
+
+//Solução implementada para listar fotos de todos os produtos de um restaurante
 // Fórum AlgaWorks: https://www.algaworks.com/forum/topicos/84056/lista-de-fotos-curiosidade
+@ApiIgnore //Anotação para ignorar esse controller na documentação //Exemplo na aula: https://app.algaworks.com/aulas/2191/implementando-o-root-entry-point-da-api
 @Controller
-@RequestMapping("/home/rodrigo/Documents/catalago/{nomeArquivo}")
+@RequestMapping("/v1/home/rodrigo/Documents/catalago/{nomeArquivo}")
 public class FotoController {
 
 	@Autowired

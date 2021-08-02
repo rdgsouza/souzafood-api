@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +24,6 @@ import com.souza.souzafood.api.openapi.controller.CidadeControllerOpenApi;
 import com.souza.souzafood.api.v1.assembler.CidadeInputDisassembler;
 import com.souza.souzafood.api.v1.assembler.CidadeModelAssembler;
 import com.souza.souzafood.api.v1.model.CidadeModel;
-import com.souza.souzafood.core.web.SouzaFoodMediaTypes;
 import com.souza.souzafood.domain.exception.EstadoNaoEncontradoException;
 import com.souza.souzafood.domain.exception.NegocioException;
 import com.souza.souzafood.domain.model.Cidade;
@@ -31,7 +31,7 @@ import com.souza.souzafood.domain.repository.CidadeRepository;
 import com.souza.souzafood.domain.service.CadastroCidadeService;
 
 @RestController
-@RequestMapping(path = "/cidades", produces = SouzaFoodMediaTypes.V1_APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CidadeController implements CidadeControllerOpenApi {
 
 	@Autowired
@@ -46,6 +46,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 	@Autowired
 	private CadastroCidadeService cadastroCidade;
 
+	@Deprecated
 	@GetMapping
 	public CollectionModel<CidadeModel> listar() {
 		List<Cidade> todasCidades = cidadeRepository.findAll();

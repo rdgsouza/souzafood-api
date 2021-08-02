@@ -36,7 +36,7 @@ import com.souza.souzafood.domain.service.EmissaoPedidoService;
 import com.souza.souzafood.infrastructure.repository.spec.PedidoSpecs;
 
 @RestController
-@RequestMapping(path = "/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PedidoController implements PedidoControllerOpenApi {
 
 	@Autowired

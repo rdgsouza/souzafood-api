@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,7 @@ import com.souza.souzafood.api.v2.assembler.CidadeInputDisassemblerV2;
 import com.souza.souzafood.api.v2.assembler.CidadeModelAssemblerV2;
 import com.souza.souzafood.api.v2.model.CidadeModelV2;
 import com.souza.souzafood.api.v2.model.input.CidadeInputV2;
-import com.souza.souzafood.core.web.SouzaFoodMediaTypes;
+import com.souza.souzafood.api.v2.openapi.CidadeControllerV2OpenApi;
 import com.souza.souzafood.domain.exception.EstadoNaoEncontradoException;
 import com.souza.souzafood.domain.exception.NegocioException;
 import com.souza.souzafood.domain.model.Cidade;
@@ -30,8 +31,8 @@ import com.souza.souzafood.domain.repository.CidadeRepository;
 import com.souza.souzafood.domain.service.CadastroCidadeService;
 
 @RestController
-@RequestMapping(path = "/cidades", produces = SouzaFoodMediaTypes.V2_APPLICATION_JSON_VALUE)
-public class CidadeControllerV2 {
+@RequestMapping(path = "/v2/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
+public class CidadeControllerV2 implements CidadeControllerV2OpenApi {
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
