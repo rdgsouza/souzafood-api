@@ -77,7 +77,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SpringFoxConfig implements WebMvcConfigurer {
 
 //	Aula: https://www.algaworks.com/aulas/2120/selecionando-os-endpoints-da-api-para-gerar-a-documentacao
-	@Bean
+	@Bean // Comentamos o @Bean para não aparecer mais a versão 1 da api. Aula: https://app.algaworks.com/aulas/2222/desligando-uma-versao-da-api
 	public Docket apiDocketV1() {
 //		Class[] clazz = {Cidade.class};//Você pode fazer com que o swagger não faça o escaneamento de
 //		uma classe para não aparecer na documentação da OpenApi da sua API. Você pode colocar mais de uma classe no Array

@@ -14,8 +14,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
 	@Autowired
-	private ApiDeprecationHandler apiDeprecationHandler;
+	private ApiRetirementHandler apiRetirementHandler;
 	
+//	https://app.algaworks.com/aulas/2099/habilitando-cors-globalmente-no-projeto-da-api
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 
@@ -27,7 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-	registry.addInterceptor(apiDeprecationHandler);
+	registry.addInterceptor(apiRetirementHandler);
 	}
 	
 //	https://app.algaworks.com/aulas/2110/implementando-requisicoes-condicionais-com-shallow-etags
