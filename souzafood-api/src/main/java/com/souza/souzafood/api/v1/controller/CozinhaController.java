@@ -29,9 +29,6 @@ import com.souza.souzafood.domain.model.Cozinha;
 import com.souza.souzafood.domain.repository.CozinhaRepository;
 import com.souza.souzafood.domain.service.CadastroCozinhaService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController
 @RequestMapping(value = "/v1/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CozinhaController implements CozinhaControllerOpenApi {
@@ -53,13 +50,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 
 	@GetMapping
 	public PagedModel<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable) {
-		
-		log.info("Consultando cozinhas com páginas de {} registros...", pageable.getPageSize());
-		
-		if (true) {
-			throw new RuntimeException("Teste de exception");
-		}
-		
+
 		Page<Cozinha> cozinhasPage = cozinhaRepository
 				.findAll(pageable);
 
