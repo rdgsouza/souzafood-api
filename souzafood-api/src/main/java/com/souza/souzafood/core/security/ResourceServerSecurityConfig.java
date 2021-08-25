@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableWebSecurity
-public class ResourceSecurityConfig extends WebSecurityConfigurerAdapter {	
+public class ResourceServerSecurityConfig extends WebSecurityConfigurerAdapter {	
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -15,6 +15,7 @@ public class ResourceSecurityConfig extends WebSecurityConfigurerAdapter {
 	       .authorizeRequests()
 	          .anyRequest().authenticated()
 	       .and()
+	       .cors().and() //Aula: https://app.algaworks.com/aulas/2246/testando-o-fluxo-authorization-code-com-um-client-javascript
 	       .oauth2ResourceServer().opaqueToken();
 	}
 	
