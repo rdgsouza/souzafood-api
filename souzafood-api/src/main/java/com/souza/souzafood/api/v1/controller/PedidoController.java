@@ -26,6 +26,7 @@ import com.souza.souzafood.api.v1.model.PedidoModel;
 import com.souza.souzafood.api.v1.model.PedidoResumoModel;
 import com.souza.souzafood.core.data.PageWrapper;
 import com.souza.souzafood.core.data.PageableTranslator;
+import com.souza.souzafood.core.security.SouzaSecurity;
 import com.souza.souzafood.domain.exception.EntidadeNaoEncontradaException;
 import com.souza.souzafood.domain.exception.NegocioException;
 import com.souza.souzafood.domain.filter.PedidoFilter;
@@ -56,6 +57,9 @@ public class PedidoController implements PedidoControllerOpenApi {
 
 	@Autowired
 	private PagedResourcesAssembler<Pedido> pagedResourcesAssembler; //https://app.algaworks.com/aulas/2171/desafio-adicionando-hypermedia-em-recursos-de-pedidos-paginacao
+	
+	@Autowired
+	private SouzaSecurity souzaSecurity;
 	
 //	@GetMapping
 //	public MappingJacksonValue listar(@RequestParam(required = false) String campos) {
@@ -103,9 +107,8 @@ public class PedidoController implements PedidoControllerOpenApi {
 		try {
 			Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
 
-			// TODO pegar usuário autenticado
 			novoPedido.setCliente(new Usuario());
-			novoPedido.getCliente().setId(1L);
+			novoPedido.getCliente().setId(souzaSecurity.getUsuarioId());
 // Implementação do metodo emitir em https://www.algaworks.com/aulas/2027/desafio-implementando-o-endpoint-de-emissao-de-pedidos
 			novoPedido = emissaoPedido.emitir(novoPedido);
 
