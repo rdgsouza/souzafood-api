@@ -25,6 +25,7 @@ import com.souza.souzafood.api.openapi.controller.CozinhaControllerOpenApi;
 import com.souza.souzafood.api.v1.assembler.CozinhaInputDisassembler;
 import com.souza.souzafood.api.v1.assembler.CozinhaModelAssembler;
 import com.souza.souzafood.api.v1.model.CozinhaModel;
+import com.souza.souzafood.core.security.CheckSecurity;
 import com.souza.souzafood.domain.model.Cozinha;
 import com.souza.souzafood.domain.repository.CozinhaRepository;
 import com.souza.souzafood.domain.service.CadastroCozinhaService;
@@ -48,9 +49,12 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	@Autowired
 	private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
 
+	@CheckSecurity.Cozinhas.PodeConsultar //https://app.algaworks.com/aulas/2277/simplificando-o-controle-de-acesso-em-metodos-com-meta-anotacoes
+	@Override
 	@GetMapping
 	public PagedModel<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable) {
-
+//        System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+		
 		Page<Cozinha> cozinhasPage = cozinhaRepository
 				.findAll(pageable);
 
@@ -60,12 +64,16 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 		return cozinhasPagedModel;
 	}
 
+    @CheckSecurity.Cozinhas.PodeConsultar
+	@Override
 	@GetMapping("/{cozinhaId}")
 	public CozinhaModel buscar(@PathVariable Long cozinhaId) {
 		Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
 		return cozinhaModelAssembler.toModel(cozinha);
 	}
 
+    @CheckSecurity.Cozinhas.PodeEditar //https://app.algaworks.com/aulas/2277/simplificando-o-controle-de-acesso-em-metodos-com-meta-anotacoes
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CozinhaModel adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
@@ -76,6 +84,8 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 		return cozinhaModelAssembler.toModel(cozinha);
 	}
 
+    @CheckSecurity.Cozinhas.PodeEditar
+	@Override
 	@PutMapping("/{cozinhaId}")
 	public CozinhaModel atualizar(@PathVariable Long cozinhaId, @RequestBody @Valid CozinhaInput cozinhaInput) {
 
@@ -87,6 +97,8 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 		return cozinhaModelAssembler.toModel(cadastroCozinha.salvar(cozinhaAtual));
 	}
 
+    @CheckSecurity.Cozinhas.PodeEditar
+	@Override
 	@DeleteMapping("/{cozinhaId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long cozinhaId) {

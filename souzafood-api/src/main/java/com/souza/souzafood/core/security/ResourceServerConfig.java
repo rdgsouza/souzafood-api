@@ -1,30 +1,30 @@
 package com.souza.souzafood.core.security;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		    .authorizeRequests()
-		       .antMatchers(HttpMethod.POST, "/v1/cozinhas/**").hasAuthority("EDITAR_COZINHAS")
-		       .antMatchers(HttpMethod.PUT, "/v1/cozinhas/**").hasAuthority("EDITAR_COZINHAS")
-		       .antMatchers(HttpMethod.GET, "/v1/cozinhas/**").authenticated()
-		       .anyRequest().denyAll()
-		    .and()
-		    .cors().and() // Sobre o metodo cors(). Aula: https://app.algaworks.com/aulas/2246/testando-o-fluxo-authorization-code-com-um-client-javascript
+		    .csrf().disable() // Sobre o metodo .csrf() Aula: https://app.algaworks.com/aulas/2230/configurando-spring-security-com-http-basic
+	                                                      // Aula: https://app.algaworks.com/aulas/1490/implementando-autenticacao-basic
+		    .cors().and() // Sobre o metodo .cors() Aula: https://app.algaworks.com/aulas/2246/testando-o-fluxo-authorization-code-com-um-client-javascript
 		    .oauth2ResourceServer()
 		    .jwt()
 		    .jwtAuthenticationConverter(jwtAuthenticationConverter());
@@ -40,10 +40,15 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 			   authorities = Collections.emptyList();
 		   }
 		   
-		   return authorities.stream()
-				   .map(SimpleGrantedAuthority::new)
-				   .collect(Collectors.toList());
+//		   https://app.algaworks.com/aulas/2279/carregando-granted-authorities-dos-escopos-do-oauth2-no-resource-server
+		   var scopesAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+		   Collection<GrantedAuthority> grantedAutthorities = scopesAuthoritiesConverter.convert(jwt);
 		   
+		   grantedAutthorities.addAll(authorities.stream()
+				   .map(SimpleGrantedAuthority::new)
+				   .collect(Collectors.toList()));
+		   
+		   return grantedAutthorities;
 		});
 		
 		return jwtAuthenticationConverter;

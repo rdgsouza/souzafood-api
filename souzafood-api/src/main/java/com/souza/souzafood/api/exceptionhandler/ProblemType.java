@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum ProblemType {
-
+// https://app.algaworks.com/aulas/1937/padronizando-o-formato-de-problemas-no-corpo-de-respostas-com-a-rfc-7807
 	MENSAGEM_INCOMPREENSIVEL("/mensagem-incompreensivel","Mensagem incompreensível"),
 	RECURSO_NAO_ENCONTRADO("/recurso-nao-encontrado", "Recurso não encontrado"),
 	ENTIDADE_EM_USO("/entidade-em-uso","Entidade em uso"),
@@ -12,8 +12,9 @@ public enum ProblemType {
 	PARAMETRO_INVALIDO("/parametro-invalido","Parâmetro inválido"),
 	ERRO_DE_SISTEMA("/erro-de-sistema","Erro de sistema"),
 	DADOS_INVALIDOS("/dados-invalidos", "Dados inválidos"), 
-	TAMANHO_MAX_DO_ARQUIVO_EXCEDIDO("/tamanho-maximo-do-arquivo-excedido", "Tamanho máximo do arquivo excedido");
-	
+	TAMANHO_MAX_DO_ARQUIVO_EXCEDIDO("/tamanho-maximo-do-arquivo-excedido", "Tamanho máximo do arquivo excedido"),
+	ACESSO_NEGADO("/acesso-negado", "Acesso negado"); //ACESSO_NEGADO("/acesso-negado", "Acesso negado"),
+
 	private String uri;
 	private String title;
 	
