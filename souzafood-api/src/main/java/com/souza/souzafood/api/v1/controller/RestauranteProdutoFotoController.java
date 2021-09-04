@@ -29,6 +29,7 @@ import com.souza.souzafood.api.v1.assembler.FotoProdutoModelAssembler;
 import com.souza.souzafood.api.v1.assembler.UrlFotoProdutoModelAssembler;
 import com.souza.souzafood.api.v1.model.FotoProdutoModel;
 import com.souza.souzafood.api.v1.model.UrlFotoProdutoModel;
+import com.souza.souzafood.core.security.CheckSecurity;
 import com.souza.souzafood.domain.exception.EntidadeNaoEncontradaException;
 import com.souza.souzafood.domain.model.FotoProduto;
 import com.souza.souzafood.domain.model.Produto;
@@ -56,6 +57,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	@Autowired
 	private FotoStorageService fotoStorage;
 	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId,
 			@PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput, 
@@ -78,6 +80,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 
 	}
 	
+	@CheckSecurity.Restaurantes.PodeConsultar
     //Passando na requisição o Accept application/json cai aqui e: Busca as infomações da foto em formato JSON
 	@GetMapping
 	public FotoProdutoModel buscar(@PathVariable Long restauranteId, 

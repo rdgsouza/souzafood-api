@@ -17,6 +17,7 @@ import com.souza.souzafood.api.openapi.controller.RestauranteUsuarioResponsavelC
 import com.souza.souzafood.api.v1.SouzaFoodLinks;
 import com.souza.souzafood.api.v1.assembler.UsuarioModelAssembler;
 import com.souza.souzafood.api.v1.model.UsuarioModel;
+import com.souza.souzafood.core.security.CheckSecurity;
 import com.souza.souzafood.domain.model.Restaurante;
 import com.souza.souzafood.domain.service.CadastroRestauranteService;
 
@@ -35,6 +36,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 	@Autowired
 	private SouzaFoodLinks souzaFoodLinks;
 	
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@Override
 	@GetMapping
 	public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
@@ -54,6 +56,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 	    return usuariosModel;
 	}
 
+	@CheckSecurity.Restaurantes.PodeEditar
 	@Override
 	@DeleteMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -62,7 +65,8 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 	    
 	    return ResponseEntity.noContent().build();
 	}
-
+	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@Override
 	@PutMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
