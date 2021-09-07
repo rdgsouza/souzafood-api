@@ -26,6 +26,7 @@ import com.souza.souzafood.api.v1.model.PedidoModel;
 import com.souza.souzafood.api.v1.model.PedidoResumoModel;
 import com.souza.souzafood.core.data.PageWrapper;
 import com.souza.souzafood.core.data.PageableTranslator;
+import com.souza.souzafood.core.security.CheckSecurity;
 import com.souza.souzafood.core.security.SouzaSecurity;
 import com.souza.souzafood.domain.exception.EntidadeNaoEncontradaException;
 import com.souza.souzafood.domain.exception.NegocioException;
@@ -81,6 +82,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 //        return pedidosWrapper;
 //	}
 	
+	@CheckSecurity.Pedidos.PodePesquisar
 	@Override
 	@GetMapping
 	public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, 
@@ -95,6 +97,8 @@ public class PedidoController implements PedidoControllerOpenApi {
 	    return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelAssembler);
 	}
 
+	@CheckSecurity.Pedidos.PodeBuscar	
+	@Override
 	@GetMapping("/{codigoPedido}")
 	public PedidoModel buscar(@PathVariable String codigoPedido) {
 		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
@@ -102,6 +106,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 		return pedidoModelAssembler.toModel(pedido);
 	}
 
+	@Override
 	@PostMapping
 	public PedidoModel adicionar(@Valid @RequestBody PedidoInput pedidoInput) {
 		try {

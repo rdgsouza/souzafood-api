@@ -57,7 +57,8 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	@Autowired
 	private FotoStorageService fotoStorage;
 	
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
+	@Override
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId,
 			@PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput, 
@@ -80,6 +81,15 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 
 	}
 	
+	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
+	@Override
+	@DeleteMapping(value = "/{produtoId}/foto")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void excluir(@PathVariable Long restauranteId, 
+			@PathVariable Long produtoId) {
+		catalagoFotoProduto.excluir(restauranteId, produtoId);
+	}
+	
 	@CheckSecurity.Restaurantes.PodeConsultar
     //Passando na requisição o Accept application/json cai aqui e: Busca as infomações da foto em formato JSON
 	@GetMapping
@@ -91,10 +101,12 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		return fotoProdutoModelAssembler.toModel(fotoProduto);
 	}
 	
-	//Se for passado na hora de fazer a requisição o Accept: image/jpeg ou image/png, cai aqui, e
+    //Se for passado na hora de fazer a requisição o Accept: image/jpeg ou image/png, cai aqui, e
 	//se a configuração da nossa api para servir a foto estiver com armazenamento local então busca a foto no seu 
     //formato png ou jpeg usando o caminho local de armazenamento da foto.
 	//Se a configuração da nossa api para servir a foto estiver com armazenamento na S3 então busca pelo caminho da url da foto na S3
+	
+	// As fotos dos produtos ficarão públicas (não precisa de autorização para acessá-las)
 	@GetMapping(produces = MediaType.ALL_VALUE)
 	public ResponseEntity<?> servir(@PathVariable Long restauranteId,
 			@PathVariable Long produtoId, @RequestHeader(name = "accept") String acceptHeader) 
@@ -138,6 +150,8 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
  
 	}
 	
+//	Resolução da pergunta no forum. Como eu retornaria uma lista de fotos, alguém pode mim dizer ou mostrar algum material sobre 
+//  https://app.algaworks.com/forum/topicos/84056/lista-de-fotos-curiosidade#90666	
 	@GetMapping(value = "/fotos", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<UrlFotoProdutoModel> buscarFotos(@PathVariable Long restauranteId) {
 		List<FotoProduto> fotoProdutos = catalagoFotoProduto.buscarTodos(restauranteId);
@@ -155,11 +169,5 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		}
 	}
 	
-	@DeleteMapping(value = "/{produtoId}/foto")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void excluir(@PathVariable Long restauranteId, 
-			@PathVariable Long produtoId) {
-      catalagoFotoProduto.excluir(restauranteId, produtoId);
-	}
 	
 }

@@ -41,5 +41,5 @@ import com.souza.souzafood.domain.model.Restaurante;
 
 	int countByCozinhaId(Long cozinha);	
 
-	
+	boolean existsResponsavel(Long restauranteId, Long usuarioId);
 }
