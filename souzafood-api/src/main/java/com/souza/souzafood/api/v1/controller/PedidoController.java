@@ -105,7 +105,8 @@ public class PedidoController implements PedidoControllerOpenApi {
 
 		return pedidoModelAssembler.toModel(pedido);
 	}
-
+ 
+	@CheckSecurity.Pedidos.PodeCriar
 	@Override
 	@PostMapping
 	public PedidoModel adicionar(@Valid @RequestBody PedidoInput pedidoInput) {

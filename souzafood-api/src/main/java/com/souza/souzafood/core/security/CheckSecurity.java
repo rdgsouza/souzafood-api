@@ -66,6 +66,19 @@ public @interface CheckSecurity {
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodePesquisar { }
+	
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and isAuthenticated()")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeCriar { }
+
+//		https://app.algaworks.com/aulas/2285/desafio-restringindo-acessos-aos-endpoints-de-transicao-de-status-de-pedidos
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('GERENCIAR_PEDIDOS') or "
+				+ "@souzaSecurity.gerenciaRestauranteDoPedido(#codigoPedido))")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeGerenciarPedidos {
+		}
 		
 	}
 	

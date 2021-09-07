@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
+import com.souza.souzafood.domain.repository.PedidoRepository;
 import com.souza.souzafood.domain.repository.RestauranteRepository;
 
 @Component
@@ -13,6 +14,9 @@ public class SouzaSecurity {
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
+	
+	@Autowired
+	private PedidoRepository pedidoRepository;
 	
 //	https://app.algaworks.com/aulas/2271/obtendo-usuario-autenticado-no-resource-server
 	public Authentication getAuthentication() {
@@ -34,5 +38,8 @@ public class SouzaSecurity {
 	    return restauranteRepository.existsResponsavel(restauranteId, getUsuarioId());
 	}        
 
+	public boolean gerenciaRestauranteDoPedido(String codigoPedido) {
+	    return pedidoRepository.isPedidoGerenciadoPor(codigoPedido, getUsuarioId());
+	}    
 	
 }

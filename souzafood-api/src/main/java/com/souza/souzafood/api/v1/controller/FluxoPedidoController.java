@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.souza.souzafood.api.openapi.controller.FluxoPedidoControllerOpenApi;
 import com.souza.souzafood.api.v1.assembler.PedidoStatusResumoModelAssembler;
 import com.souza.souzafood.api.v1.model.PedidoStatusResumoModel;
+import com.souza.souzafood.core.security.CheckSecurity;
 import com.souza.souzafood.domain.service.EmissaoPedidoService;
 import com.souza.souzafood.domain.service.FluxoPedidoService;
 
@@ -30,6 +31,8 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 	@Autowired
 	private EmissaoPedidoService emissaoPedidoService;
 	
+	@CheckSecurity.Pedidos.PodeGerenciarPedidos
+	@Override
 	@PutMapping("/confirmacao")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> confirmar(@PathVariable String codigoPedido) {
@@ -38,6 +41,8 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 		return ResponseEntity.noContent().build(); //https://app.algaworks.com/aulas/2177/adicionando-links-de-transicoes-de-status-de-pedidos
 	}
 
+	@CheckSecurity.Pedidos.PodeGerenciarPedidos
+	@Override
 	@PutMapping("/cancelamento")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> cancelar(@PathVariable String codigoPedido) {
@@ -46,6 +51,8 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 	    return ResponseEntity.noContent().build();
 	}
 
+	@CheckSecurity.Pedidos.PodeGerenciarPedidos
+	@Override
 	@PutMapping("/entrega")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> entregar(@PathVariable String codigoPedido) {
@@ -54,7 +61,9 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 	    return ResponseEntity.noContent().build();
 	}
 
+	@CheckSecurity.Pedidos.PodeGerenciarPedidos
 	@GetMapping("/status")
+	@Override
 	public PedidoStatusResumoModel buscar(@PathVariable String codigoPedido) {
 		return pedidoStatusResumoModelAssembler.toModel(
 			emissaoPedidoService.buscarOuFalhar(codigoPedido));
