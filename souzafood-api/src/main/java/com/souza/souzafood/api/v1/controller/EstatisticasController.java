@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.souza.souzafood.api.openapi.controller.EstatisticasControllerOpenApi;
 import com.souza.souzafood.api.v1.SouzaFoodLinks;
+import com.souza.souzafood.core.security.CheckSecurity;
 import com.souza.souzafood.domain.filter.VendaDiariaFilter;
 import com.souza.souzafood.domain.model.dto.VendaDiaria;
 import com.souza.souzafood.domain.service.VendaQueryService;
@@ -32,7 +33,9 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
 	@Autowired
 	private VendaReportService vendaReportService;
 	
+	@CheckSecurity.Estatisticas.PodeConsultar
 	@Override
+//	https://app.algaworks.com/aulas/2192/desafio-implementando-endpoint-com-links-de-recursos-de-estatisticas
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public EstatisticasModel estatisticas() {
 	    var estatisticasModel = new EstatisticasModel();
@@ -42,12 +45,16 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
 	    return estatisticasModel;
 	}    
 	
+	@CheckSecurity.Estatisticas.PodeConsultar
+	@Override
 	@GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro,
 			@RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
 		return vendaQueryService.consultarVendasDiarias(filtro, timeOffset);
 	}
 	
+	@CheckSecurity.Estatisticas.PodeConsultar
+	@Override
 	@GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
 	public ResponseEntity<byte[]> consultarVendasDiariasPdf(VendaDiariaFilter filtro,
 			@RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
