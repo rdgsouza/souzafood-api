@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.souza.souzafood.api.openapi.controller.PermissaoControllerOpenApi;
 import com.souza.souzafood.api.v1.assembler.PermissaoModelAssembler;
 import com.souza.souzafood.api.v1.model.PermissaoModel;
+import com.souza.souzafood.core.security.CheckSecurity;
 import com.souza.souzafood.domain.model.Permissao;
 import com.souza.souzafood.domain.repository.PermissaoRepository;
 
@@ -25,6 +26,7 @@ public class PermissaoController implements PermissaoControllerOpenApi {
     @Autowired
     private PermissaoModelAssembler permissaoModelAssembler;
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<PermissaoModel> listar() {

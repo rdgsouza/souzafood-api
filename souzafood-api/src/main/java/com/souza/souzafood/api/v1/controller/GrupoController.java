@@ -24,6 +24,7 @@ import com.souza.souzafood.api.openapi.controller.GrupoControllerOpenApi;
 import com.souza.souzafood.api.v1.assembler.GrupoInputDisassembler;
 import com.souza.souzafood.api.v1.assembler.GrupoModelAssembler;
 import com.souza.souzafood.api.v1.model.GrupoModel;
+import com.souza.souzafood.core.security.CheckSecurity;
 import com.souza.souzafood.domain.model.Grupo;
 import com.souza.souzafood.domain.repository.GrupoRepository;
 import com.souza.souzafood.domain.service.CadastroGrupoService;
@@ -44,6 +45,7 @@ public class GrupoController implements GrupoControllerOpenApi {
     @Autowired
     private GrupoInputDisassembler grupoInputDisassembler;
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<GrupoModel> listar() {
@@ -52,6 +54,8 @@ public class GrupoController implements GrupoControllerOpenApi {
         return grupoModelAssembler.toCollectionModel(todosGrupos);
     }
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
+    @Override
     @GetMapping("/{grupoId}")
     public GrupoModel buscar(@PathVariable Long grupoId) {
         Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
@@ -59,6 +63,8 @@ public class GrupoController implements GrupoControllerOpenApi {
         return grupoModelAssembler.toModel(grupo);
     }
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
+    @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public GrupoModel adicionar(@RequestBody @Valid GrupoInput grupoInput) {
@@ -69,6 +75,8 @@ public class GrupoController implements GrupoControllerOpenApi {
         return grupoModelAssembler.toModel(grupo);
     }
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
+    @Override
     @PutMapping("/{grupoId}")
     public GrupoModel atualizar(@PathVariable Long grupoId,
             @RequestBody @Valid GrupoInput grupoInput) {
@@ -81,6 +89,8 @@ public class GrupoController implements GrupoControllerOpenApi {
         return grupoModelAssembler.toModel(grupoAtual);
     }
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
+    @Override
     @DeleteMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long grupoId) {

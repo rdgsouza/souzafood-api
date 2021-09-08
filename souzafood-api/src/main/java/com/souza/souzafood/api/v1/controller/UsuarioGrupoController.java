@@ -17,6 +17,7 @@ import com.souza.souzafood.api.openapi.controller.UsuarioGrupoControllerOpenApi;
 import com.souza.souzafood.api.v1.SouzaFoodLinks;
 import com.souza.souzafood.api.v1.assembler.GrupoModelAssembler;
 import com.souza.souzafood.api.v1.model.GrupoModel;
+import com.souza.souzafood.core.security.CheckSecurity;
 import com.souza.souzafood.domain.model.Usuario;
 import com.souza.souzafood.domain.service.CadastroUsuarioService;
 
@@ -34,6 +35,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
 	@Autowired
 	private SouzaFoodLinks souzaFoodLinks;
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@Override
 	@GetMapping
 	public CollectionModel<GrupoModel> listar(@PathVariable Long usuarioId) {
@@ -51,6 +53,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
 	    return gruposModel;
 	}   
 
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@Override
 	@DeleteMapping("/{grupoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -60,6 +63,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
 	    return ResponseEntity.noContent().build();
 	}
 
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@Override
 	@PutMapping("/{grupoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)

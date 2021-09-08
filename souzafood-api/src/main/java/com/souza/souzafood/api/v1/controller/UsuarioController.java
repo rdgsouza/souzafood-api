@@ -24,6 +24,7 @@ import com.souza.souzafood.api.openapi.controller.UsuarioControllerOpenApi;
 import com.souza.souzafood.api.v1.assembler.UsuarioInputDisassembler;
 import com.souza.souzafood.api.v1.assembler.UsuarioModelAssembler;
 import com.souza.souzafood.api.v1.model.UsuarioModel;
+import com.souza.souzafood.core.security.CheckSecurity;
 import com.souza.souzafood.domain.model.Usuario;
 import com.souza.souzafood.domain.repository.UsuarioRepository;
 import com.souza.souzafood.domain.service.CadastroUsuarioService;
@@ -44,6 +45,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
     @Autowired
     private UsuarioInputDisassembler usuarioInputDisassembler;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<UsuarioModel> listar() {
@@ -52,6 +54,8 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         return usuarioModelAssembler.toCollectionModel(todosUsuarios);
     }
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
+    @Override
     @GetMapping("/{usuarioId}")
     public UsuarioModel buscar(@PathVariable Long usuarioId) {
         Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
@@ -59,6 +63,9 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         return usuarioModelAssembler.toModel(usuario);
     }
     
+//   O Cadastro de usuario ficara publico (aberto). 
+//   https://app.algaworks.com/aulas/2288/desafio-restringindo-acessos-aos-endpoints-de-usuarios-grupos-e-permissoes
+    @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UsuarioModel adicionar(@RequestBody @Valid UsuarioComSenhaInput usuarioInput) {
@@ -68,6 +75,8 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         return usuarioModelAssembler.toModel(usuario);
     }
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
+    @Override
     @PutMapping("/{usuarioId}")
     public UsuarioModel atualizar(@PathVariable Long usuarioId,
             @RequestBody @Valid UsuarioInput usuarioInput) {

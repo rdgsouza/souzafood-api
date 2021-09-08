@@ -17,6 +17,7 @@ import com.souza.souzafood.api.openapi.controller.GrupoPermissaoControllerOpenAp
 import com.souza.souzafood.api.v1.SouzaFoodLinks;
 import com.souza.souzafood.api.v1.assembler.PermissaoModelAssembler;
 import com.souza.souzafood.api.v1.model.PermissaoModel;
+import com.souza.souzafood.core.security.CheckSecurity;
 import com.souza.souzafood.domain.model.Grupo;
 import com.souza.souzafood.domain.service.CadastroGrupoService;
 
@@ -34,6 +35,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 	@Autowired
 	private SouzaFoodLinks souzaFoodLinks;
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@Override
 	@GetMapping
 	public CollectionModel<PermissaoModel> listar(@PathVariable Long grupoId) {
@@ -53,6 +55,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 	    return permissoesModel;
 	}    
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@Override
 	@DeleteMapping("/{permissaoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -62,6 +65,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 	    return ResponseEntity.noContent().build();
 	}
 
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@Override
 	@PutMapping("/{permissaoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)

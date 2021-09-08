@@ -24,6 +24,7 @@ import com.souza.souzafood.api.openapi.controller.CidadeControllerOpenApi;
 import com.souza.souzafood.api.v1.assembler.CidadeInputDisassembler;
 import com.souza.souzafood.api.v1.assembler.CidadeModelAssembler;
 import com.souza.souzafood.api.v1.model.CidadeModel;
+import com.souza.souzafood.core.security.CheckSecurity;
 import com.souza.souzafood.domain.exception.EstadoNaoEncontradoException;
 import com.souza.souzafood.domain.exception.NegocioException;
 import com.souza.souzafood.domain.model.Cidade;
@@ -46,6 +47,8 @@ public class CidadeController implements CidadeControllerOpenApi {
 	@Autowired
 	private CadastroCidadeService cadastroCidade;
 
+	@CheckSecurity.Cidades.PodeConsultar
+	@Override
 	@Deprecated
 	@GetMapping
 	public CollectionModel<CidadeModel> listar() {
@@ -54,13 +57,17 @@ public class CidadeController implements CidadeControllerOpenApi {
 		return cidadeModelAssembler.toCollectionModel(todasCidades);
 	}
 	
+	@CheckSecurity.Cidades.PodeConsultar
+	@Override
 	@GetMapping("/{cidadeId}")
 	public CidadeModel buscar(@PathVariable Long cidadeId) {
 		Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
 		
 		return cidadeModelAssembler.toModel(cidade);
 	}
-
+	
+	@CheckSecurity.Cidades.PodeEditar
+    @Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeModel adicionar(
@@ -78,6 +85,8 @@ public class CidadeController implements CidadeControllerOpenApi {
 		}
 	}
 
+	@CheckSecurity.Cidades.PodeEditar
+	@Override
 	@PutMapping("/{cidadeId}")
 	public CidadeModel atualizar(@PathVariable Long cidadeId, 		
 			@RequestBody  @Valid CidadeInput cidadeInput) {
@@ -92,6 +101,8 @@ public class CidadeController implements CidadeControllerOpenApi {
 		}
 	}
 
+	@CheckSecurity.Cidades.PodeEditar
+	@Override
 	@DeleteMapping("/{cidadeId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long cidadeId) {
