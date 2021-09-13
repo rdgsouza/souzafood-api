@@ -6,7 +6,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import com.souza.souzafood.api.v1.SouzaFoodLinks;
+import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.controller.GrupoController;
 import com.souza.souzafood.api.v1.model.GrupoModel;
 import com.souza.souzafood.domain.model.Grupo;
@@ -19,7 +19,7 @@ public class GrupoModelAssembler
     private ModelMapper modelMapper;
     
     @Autowired
-    private SouzaFoodLinks souzaFoodLinks;
+    private SouzaLinks souzaFoodLinks;
     
     public GrupoModelAssembler() {
         super(GrupoController.class, GrupoModel.class);

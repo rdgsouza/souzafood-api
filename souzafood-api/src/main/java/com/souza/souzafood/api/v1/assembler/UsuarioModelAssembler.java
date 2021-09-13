@@ -6,9 +6,10 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import com.souza.souzafood.api.v1.SouzaFoodLinks;
+import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.controller.UsuarioController;
 import com.souza.souzafood.api.v1.model.UsuarioModel;
+import com.souza.souzafood.core.security.SouzaSecurity;
 import com.souza.souzafood.domain.model.Usuario;
 
 // https://app.algaworks.com/aulas/2167/desafio-adicionando-hypermedia-nos-recursos-de-usuarios
@@ -20,7 +21,10 @@ public class UsuarioModelAssembler
     private ModelMapper modelMapper;
     
     @Autowired
-    private SouzaFoodLinks souzaFoodLinks;
+    private SouzaLinks souzaLinks;
+    
+    @Autowired
+    private SouzaSecurity souzaSecurity;  
     
     public UsuarioModelAssembler() {
         super(UsuarioController.class, UsuarioModel.class);
@@ -31,9 +35,11 @@ public class UsuarioModelAssembler
         UsuarioModel usuarioModel = createModelWithId(usuario.getId(), usuario);
         modelMapper.map(usuario, usuarioModel);
         
-        usuarioModel.add(souzaFoodLinks.linkToUsuarios("usuarios"));
-        
-        usuarioModel.add(souzaFoodLinks.linkToGruposUsuario(usuario.getId(), "grupos-usuario"));
+        if (souzaSecurity.podeConsultarUsuariosGruposPermissoes()) {
+        	usuarioModel.add(souzaLinks.linkToUsuarios("usuarios"));
+        	
+        	usuarioModel.add(souzaLinks.linkToGruposUsuario(usuario.getId(), "grupos-usuario"));
+        }
         
         return usuarioModel;
     }
@@ -41,6 +47,6 @@ public class UsuarioModelAssembler
     @Override
     public CollectionModel<UsuarioModel> toCollectionModel(Iterable<? extends Usuario> entities) {
         return super.toCollectionModel(entities)
-            .add(souzaFoodLinks.linkToUsuarios());
+            .add(souzaLinks.linkToUsuarios());
     }         
 }                

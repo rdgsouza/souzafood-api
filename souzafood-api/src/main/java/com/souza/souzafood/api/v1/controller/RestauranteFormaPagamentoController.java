@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.souza.souzafood.api.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
-import com.souza.souzafood.api.v1.SouzaFoodLinks;
+import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.assembler.FormaPagamentoModelAssembler;
 import com.souza.souzafood.api.v1.model.FormaPagamentoModel;
 import com.souza.souzafood.core.security.CheckSecurity;
@@ -33,7 +33,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 	private FormaPagamentoModelAssembler formaPagamentoModelAssembler;
 
 	@Autowired
-	private SouzaFoodLinks souzaFoodLinks;
+	private SouzaLinks souzaFoodLinks;
 	
 	@CheckSecurity.Restaurantes.PodeConsultar
 	@Override

@@ -6,8 +6,9 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import com.souza.souzafood.api.v1.SouzaFoodLinks;
+import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.controller.RestauranteController;
+import com.souza.souzafood.core.security.SouzaSecurity;
 import com.souza.souzafood.domain.model.Restaurante;
 
 @Component
@@ -18,7 +19,11 @@ public class RestauranteApenasNomeModelAssembler
     private ModelMapper modelMapper;
     
     @Autowired
-    private SouzaFoodLinks souzaFoodLinks;
+    private SouzaLinks souzaLinks;
+    
+    @Autowired
+    private SouzaSecurity souzaSecurity;    
+
     
     public RestauranteApenasNomeModelAssembler() {
         super(RestauranteController.class, RestauranteApenasNomeModel.class);
@@ -31,14 +36,21 @@ public class RestauranteApenasNomeModelAssembler
         
         modelMapper.map(restaurante, restauranteModel);
         
-        restauranteModel.add(souzaFoodLinks.linkToRestaurantes("restaurantes"));
+        if (souzaSecurity.podeConsultarRestaurantes()) {
+            restauranteModel.add(souzaLinks.linkToRestaurantes("restaurantes"));
+        }
         
         return restauranteModel;
     }
-    
+
     @Override
     public CollectionModel<RestauranteApenasNomeModel> toCollectionModel(Iterable<? extends Restaurante> entities) {
-        return super.toCollectionModel(entities)
-                .add(souzaFoodLinks.linkToRestaurantes());
+        CollectionModel<RestauranteApenasNomeModel> collectionModel = super.toCollectionModel(entities);
+        
+        if (souzaSecurity.podeConsultarRestaurantes()) {
+            collectionModel.add(souzaLinks.linkToRestaurantes());
+        }
+                
+        return collectionModel;
     }   
 }

@@ -5,9 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import com.souza.souzafood.api.v1.SouzaFoodLinks;
+import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.controller.RestauranteProdutoController;
 import com.souza.souzafood.api.v1.model.ProdutoModel;
+import com.souza.souzafood.core.security.SouzaSecurity;
 import com.souza.souzafood.domain.model.Produto;
 
 @Component
@@ -18,7 +19,10 @@ public class ProdutoModelAssembler
     private ModelMapper modelMapper;
     
     @Autowired
-    private SouzaFoodLinks souzaFoodLinks;
+    private SouzaLinks souzaFoodLinks;
+    
+    @Autowired
+    private SouzaSecurity souzaSecurity;
     
     public ProdutoModelAssembler() {
         super(RestauranteProdutoController.class, ProdutoModel.class);
@@ -31,10 +35,12 @@ public class ProdutoModelAssembler
         
         modelMapper.map(produto, produtoModel);
         
-        produtoModel.add(souzaFoodLinks.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
+        if (souzaSecurity.podeConsultarRestaurantes()) {
+        	produtoModel.add(souzaFoodLinks.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
 
-        produtoModel.add(souzaFoodLinks.linkToFotoProduto(
-                produto.getRestaurante().getId(), produto.getId(), "foto"));
+        	produtoModel.add(souzaFoodLinks.linkToFotoProduto(
+        			produto.getRestaurante().getId(), produto.getId(), "foto"));
+        }
         
         return produtoModel;
     }          

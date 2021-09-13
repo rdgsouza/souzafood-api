@@ -20,7 +20,7 @@ public @interface CheckSecurity {
 		@Target(METHOD)
 		public @interface PodeEditar {}
 
-		@PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@souzaSecurity.podeConsultarCozinhas()")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodeConsultar {}
@@ -29,21 +29,19 @@ public @interface CheckSecurity {
 
 	public @interface Restaurantes {
 
-		@PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_RESTAURANTES')")
+		@PreAuthorize("@souzaSecurity.podeGerenciarCadastroRestaurantes()")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodeGerenciarCadastro {}
 
 		
-		@PreAuthorize("hasAuthority('SCOPE_WRITE') and "
-				+ "(hasAuthority('EDITAR_RESTAURANTES') or "
-				+ "@souzaSecurity.gerenciaRestaurante(#restauranteId))")
+        @PreAuthorize("@souzaSecurity.podeGerenciarFuncionamentoRestaurantes(#restauranteId)")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodeGerenciarFuncionamento {}
 
 		
-		@PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@souzaSecurity.podeConsultarRestaurantes()")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodeConsultar {}
@@ -54,27 +52,27 @@ public @interface CheckSecurity {
 		
 		@PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
 		@PostAuthorize("hasAuthority('CONSULTAR_PEDIDOS') or " //https://app.algaworks.com/aulas/2283/restringindo-acessos-com-postauthorize
-				+ "@souzaSecurity.getUsuarioId() == returnObject.cliente.id or "
+				+ "@souzaSecurity.usuarioAutenticadoIgual(returnObject.cliente.id) or " //https://app.algaworks.com/aulas/2292/corrigindo-logica-de-restricao-de-acessos-para-client-credentials-flow
 				+ "@souzaSecurity.gerenciaRestaurante(returnObject.restaurante.id)")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodeBuscar {}
 
-		@PreAuthorize("hasAuthority('SCOPE_READ') and (hasAuthority('CONSULTAR_PEDIDOS') or " 
-				+ "@souzaSecurity.getUsuarioId() == #filtro.clienteId or"
-				+ "@souzaSecurity.gerenciaRestaurante(#filtro.restauranteId))")
+        @PreAuthorize("@souzaSecurity.podePesquisarPedidos(#filtro.clienteId, #filtro.restauranteId)")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodePesquisar { }
 	
-		@PreAuthorize("hasAuthority('SCOPE_WRITE') and isAuthenticated()")
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and isAuthenticated()")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodeCriar { }
 
 //		https://app.algaworks.com/aulas/2285/desafio-restringindo-acessos-aos-endpoints-de-transicao-de-status-de-pedidos
-		@PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('GERENCIAR_PEDIDOS') or "
-				+ "@souzaSecurity.gerenciaRestauranteDoPedido(#codigoPedido))")
+//		@PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('GERENCIAR_PEDIDOS') or "
+//				+ "@souzaSecurity.gerenciaRestauranteDoPedido(#codigoPedido))")
+//		https://app.algaworks.com/aulas/2293/gerando-links-do-hal-dinamicamente-de-acordo-com-permissoes-do-usuario
+		@PreAuthorize("@souzaSecurity.podeGerenciarPedidos(#codigoPedido)")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodeGerenciarPedidos { }
@@ -88,7 +86,7 @@ public @interface CheckSecurity {
 	    @Target(METHOD)
 	    public @interface PodeEditar { }
 
-	    @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@souzaSecurity.podeConsultarFormasPagamento()")
 	    @Retention(RUNTIME)
 	    @Target(METHOD)
 	    public @interface PodeConsultar { }
@@ -102,7 +100,7 @@ public @interface CheckSecurity {
 	    @Target(METHOD)
 	    public @interface PodeEditar { }
 
-	    @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@souzaSecurity.podeConsultarCidades()")
 	    @Retention(RUNTIME)
 	    @Target(METHOD)
 	    public @interface PodeConsultar { }
@@ -116,7 +114,7 @@ public @interface CheckSecurity {
 	    @Target(METHOD)
 	    public @interface PodeEditar { }
 
-	    @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@souzaSecurity.podeConsultarEstados()")
 	    @Retention(RUNTIME)
 	    @Target(METHOD)
 	    public @interface PodeConsultar { }
@@ -126,24 +124,24 @@ public @interface CheckSecurity {
 	public @interface UsuariosGruposPermissoes {
 
 	    @PreAuthorize("hasAuthority('SCOPE_WRITE') and "
-	            + "@souzaSecurity.getUsuarioId() == #usuarioId")
+	            + "@souzaSecurity.usuarioAutenticadoIgual(#usuarioId)")
 	    @Retention(RUNTIME)
 	    @Target(METHOD)
 	    public @interface PodeAlterarPropriaSenha { }
 	    
 	    @PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES') or "
-	            + "@souzaSecurity.getUsuarioId() == #usuarioId)")
+	            + "@souzaSecurity.usuarioAutenticadoIgual(#usuarioId))")
 	    @Retention(RUNTIME)
 	    @Target(METHOD)
 	    public @interface PodeAlterarUsuario { }
 
-	    @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES')")
+        @PreAuthorize("@souzaSecurity.podeEditarUsuariosGruposPermissoes()")
 	    @Retention(RUNTIME)
 	    @Target(METHOD)
 	    public @interface PodeEditar { }
 	    
 
-	    @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_USUARIOS_GRUPOS_PERMISSOES')")
+        @PreAuthorize("@souzaSecurity.podeConsultarUsuariosGruposPermissoes()")
 	    @Retention(RUNTIME)
 	    @Target(METHOD)
 	    public @interface PodeConsultar { }
@@ -152,7 +150,7 @@ public @interface CheckSecurity {
 	
 	public @interface Estatisticas {
 
-	    @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('GERAR_RELATORIOS')")
+        @PreAuthorize("@souzaSecurity.podeConsultarEstatisticas()")
 	    @Retention(RUNTIME)
 	    @Target(METHOD)
 	    public @interface PodeConsultar { }

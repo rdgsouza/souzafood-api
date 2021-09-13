@@ -6,9 +6,10 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import com.souza.souzafood.api.v1.SouzaFoodLinks;
+import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.controller.RestauranteController;
 import com.souza.souzafood.api.v1.model.RestauranteModel;
+import com.souza.souzafood.core.security.SouzaSecurity;
 import com.souza.souzafood.domain.model.Restaurante;
 
 @Component
@@ -19,7 +20,11 @@ public class RestauranteModelAssembler
     private ModelMapper modelMapper;
     
     @Autowired
-    private SouzaFoodLinks souzaFoodLinks;
+    private SouzaLinks souzaLinks;
+    
+    @Autowired
+    private SouzaSecurity souzaSecurity;    
+
     
     public RestauranteModelAssembler() {
         super(RestauranteController.class, RestauranteModel.class);
@@ -30,51 +35,72 @@ public class RestauranteModelAssembler
         RestauranteModel restauranteModel = createModelWithId(restaurante.getId(), restaurante);
         modelMapper.map(restaurante, restauranteModel);
         
-        restauranteModel.add(souzaFoodLinks.linkToRestaurantes("restaurantes"));
-        
-        if (restaurante.ativacaoPermitida()) {
-            restauranteModel.add(
-            		souzaFoodLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
+        if (souzaSecurity.podeConsultarRestaurantes()) {
+            restauranteModel.add(souzaLinks.linkToRestaurantes("restaurantes"));
         }
+        
+        if (souzaSecurity.podeGerenciarCadastroRestaurantes()) {
+            if (restaurante.ativacaoPermitida()) {
+                restauranteModel.add(
+                        souzaLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
+            }
 
-        if (restaurante.inativacaoPermitida()) {
-            restauranteModel.add(
-            		souzaFoodLinks.linkToRestauranteInativacao(restaurante.getId(), "inativar"));
+            if (restaurante.inativacaoPermitida()) {
+                restauranteModel.add(
+                        souzaLinks.linkToRestauranteInativacao(restaurante.getId(), "inativar"));
+            }
         }
+        
+        if (souzaSecurity.podeGerenciarFuncionamentoRestaurantes(restaurante.getId())) {
+            if (restaurante.aberturaPermitida()) {
+                restauranteModel.add(
+                        souzaLinks.linkToRestauranteAbertura(restaurante.getId(), "abrir"));
+            }
 
-        if (restaurante.aberturaPermitida()) {
-            restauranteModel.add(
-            		souzaFoodLinks.linkToRestauranteAbertura(restaurante.getId(), "abrir"));
-        }
-
-        if (restaurante.fechamentoPermitido()) {
-            restauranteModel.add(
-            		souzaFoodLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
+            if (restaurante.fechamentoPermitido()) {
+                restauranteModel.add(
+                        souzaLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
+            }
         }
         
-        restauranteModel.add(souzaFoodLinks.linkToProdutos(restaurante.getId(), "produtos"));
-        
-        restauranteModel.getCozinha().add(
-        		souzaFoodLinks.linkToCozinha(restaurante.getCozinha().getId()));
-        
-        if (restauranteModel.getEndereco() != null 
-                && restauranteModel.getEndereco().getCidade() != null) {
-            restauranteModel.getEndereco().getCidade().add(
-            		souzaFoodLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
+        if (souzaSecurity.podeConsultarRestaurantes()) {
+            restauranteModel.add(souzaLinks.linkToProdutos(restaurante.getId(), "produtos"));
         }
         
-        restauranteModel.add(souzaFoodLinks.linkToRestauranteFormasPagamento(restaurante.getId(), 
-                "formas-pagamento"));
+        if (souzaSecurity.podeConsultarCozinhas()) {
+            restauranteModel.getCozinha().add(
+                    souzaLinks.linkToCozinha(restaurante.getCozinha().getId()));
+        }
         
-        restauranteModel.add(souzaFoodLinks.linkToRestauranteResponsaveis(restaurante.getId(), 
-                "responsaveis"));
+        if (souzaSecurity.podeConsultarCidades()) {
+            if (restauranteModel.getEndereco() != null 
+                    && restauranteModel.getEndereco().getCidade() != null) {
+                restauranteModel.getEndereco().getCidade().add(
+                        souzaLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
+            }
+        }
+        
+        if (souzaSecurity.podeConsultarRestaurantes()) {
+            restauranteModel.add(souzaLinks.linkToRestauranteFormasPagamento(restaurante.getId(), 
+                    "formas-pagamento"));
+        }
+        
+        if (souzaSecurity.podeGerenciarCadastroRestaurantes()) {
+            restauranteModel.add(souzaLinks.linkToRestauranteResponsaveis(restaurante.getId(), 
+                    "responsaveis"));
+        }
         
         return restauranteModel;
     }
-    
+
     @Override
     public CollectionModel<RestauranteModel> toCollectionModel(Iterable<? extends Restaurante> entities) {
-        return super.toCollectionModel(entities)
-                .add(souzaFoodLinks.linkToRestaurantes());
+        CollectionModel<RestauranteModel> collectionModel = super.toCollectionModel(entities);
+        
+        if (souzaSecurity.podeConsultarRestaurantes()) {
+            collectionModel.add(souzaLinks.linkToRestaurantes());
+        }
+        
+        return collectionModel;
     }   
 }

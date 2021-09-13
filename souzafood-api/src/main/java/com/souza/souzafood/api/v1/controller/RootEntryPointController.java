@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.souza.souzafood.api.v1.SouzaFoodLinks;
+import com.souza.souzafood.api.v1.SouzaLinks;
 
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -17,7 +17,7 @@ import springfox.documentation.annotations.ApiIgnore;
 public class RootEntryPointController {
 
 	@Autowired
-	private SouzaFoodLinks souzaFoodLinks;
+	private SouzaLinks souzaFoodLinks;
 
 //	https://app.algaworks.com/aulas/2191/implementando-o-root-entry-point-da-api
 	@GetMapping

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.souza.souzafood.api.model.input.ProdutoInput;
 import com.souza.souzafood.api.openapi.controller.RestauranteProdutoControllerOpenApi;
-import com.souza.souzafood.api.v1.SouzaFoodLinks;
+import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.assembler.ProdutoInputDisassembler;
 import com.souza.souzafood.api.v1.assembler.ProdutoModelAssembler;
 import com.souza.souzafood.api.v1.model.ProdutoModel;
@@ -52,7 +52,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 	private ProdutoInputDisassembler produtoInputDisassembler;
 
 	@Autowired
-	private SouzaFoodLinks souzaFoodLinks;
+	private SouzaLinks souzaFoodLinks;
 	
 	@CheckSecurity.Restaurantes.PodeConsultar
 	@Override

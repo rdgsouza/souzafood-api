@@ -6,8 +6,9 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
-import com.souza.souzafood.api.v1.SouzaFoodLinks;
+import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.model.PermissaoModel;
+import com.souza.souzafood.core.security.SouzaSecurity;
 import com.souza.souzafood.domain.model.Permissao;
 
 @Component
@@ -18,8 +19,12 @@ public class PermissaoModelAssembler
     private ModelMapper modelMapper;
     
     @Autowired
-    private SouzaFoodLinks souzaFoodLinks;
+    private SouzaLinks souzaLinks;
 
+    @Autowired
+    private SouzaSecurity souzaSecurity;
+ 
+    
     @Override
     public PermissaoModel toModel(Permissao permissao) {
         PermissaoModel permissaoModel = modelMapper.map(permissao, PermissaoModel.class);
@@ -28,7 +33,13 @@ public class PermissaoModelAssembler
     
     @Override
     public CollectionModel<PermissaoModel> toCollectionModel(Iterable<? extends Permissao> entities) {
-        return RepresentationModelAssembler.super.toCollectionModel(entities)
-                .add(souzaFoodLinks.linkToPermissoes());
-    }   
+        CollectionModel<PermissaoModel> collectionModel 
+            = RepresentationModelAssembler.super.toCollectionModel(entities);
+
+        if (souzaSecurity.podeConsultarUsuariosGruposPermissoes()) {
+            collectionModel.add(souzaLinks.linkToPermissoes());
+        }
+        
+        return collectionModel;            
+    }  
 }

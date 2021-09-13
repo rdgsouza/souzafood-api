@@ -31,7 +31,7 @@ import com.souza.souzafood.api.v1.controller.UsuarioGrupoController;
 
 // https://app.algaworks.com/aulas/2175/refatorando-construcao-e-inclusao-de-links-em-representation-model
 @Component
-public class SouzaFoodLinks {
+public class SouzaLinks {
 
 	  public static final TemplateVariables PAGINACAO_VARIABLES = new TemplateVariables(
       		new TemplateVariable("page", VariableType.REQUEST_PARAM),

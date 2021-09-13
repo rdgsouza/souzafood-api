@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import com.souza.souzafood.api.v1.SouzaFoodLinks;
+import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.controller.CozinhaController;
 import com.souza.souzafood.api.v1.model.CozinhaModel;
 import com.souza.souzafood.domain.model.Cozinha;
@@ -18,7 +18,7 @@ public class CozinhaModelAssembler extends
 	private ModelMapper modelMapper;
 	
 	@Autowired
-	private SouzaFoodLinks souzaFoodLinks;
+	private SouzaLinks souzaFoodLinks;
 	
 	public CozinhaModelAssembler() {
 		super(CozinhaController.class, CozinhaModel.class);

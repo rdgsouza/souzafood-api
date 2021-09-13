@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.souza.souzafood.api.openapi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
-import com.souza.souzafood.api.v1.SouzaFoodLinks;
+import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.assembler.UsuarioModelAssembler;
 import com.souza.souzafood.api.v1.model.UsuarioModel;
 import com.souza.souzafood.core.security.CheckSecurity;
@@ -34,7 +34,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 	private UsuarioModelAssembler usuarioModelAssembler;
 
 	@Autowired
-	private SouzaFoodLinks souzaFoodLinks;
+	private SouzaLinks souzaFoodLinks;
 	
 	@CheckSecurity.Restaurantes.PodeConsultar
 	@Override

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.souza.souzafood.api.openapi.controller.EstatisticasControllerOpenApi;
-import com.souza.souzafood.api.v1.SouzaFoodLinks;
+import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.core.security.CheckSecurity;
 import com.souza.souzafood.domain.filter.VendaDiariaFilter;
 import com.souza.souzafood.domain.model.dto.VendaDiaria;
@@ -28,7 +28,7 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
 	private VendaQueryService vendaQueryService;
 	
 	@Autowired
-	private SouzaFoodLinks souzaFoodLinks;
+	private SouzaLinks souzaFoodLinks;
 	
 	@Autowired
 	private VendaReportService vendaReportService;

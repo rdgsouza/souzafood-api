@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.souza.souzafood.api.openapi.controller.GrupoPermissaoControllerOpenApi;
-import com.souza.souzafood.api.v1.SouzaFoodLinks;
+import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.assembler.PermissaoModelAssembler;
 import com.souza.souzafood.api.v1.model.PermissaoModel;
 import com.souza.souzafood.core.security.CheckSecurity;
+import com.souza.souzafood.core.security.SouzaSecurity;
 import com.souza.souzafood.domain.model.Grupo;
 import com.souza.souzafood.domain.service.CadastroGrupoService;
 
@@ -33,7 +34,10 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 	private PermissaoModelAssembler permissaoModelAssembler;
 	    
 	@Autowired
-	private SouzaFoodLinks souzaFoodLinks;
+	private SouzaLinks souzaFoodLinks;
+	
+	@Autowired
+	private SouzaSecurity souzaSecurity;   
 	
 	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@Override
@@ -43,14 +47,19 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 	    
 	    CollectionModel<PermissaoModel> permissoesModel 
 	        = permissaoModelAssembler.toCollectionModel(grupo.getPermissoes())
-	            .removeLinks()
-	            .add(souzaFoodLinks.linkToGrupoPermissoes(grupoId))
-	            .add(souzaFoodLinks.linkToGrupoPermissaoAssociacao(grupoId, "associar"));
+	            .removeLinks();
+	    
+	    permissoesModel.add(souzaFoodLinks.linkToGrupoPermissoes(grupoId));
+
+	    if (souzaSecurity.podeEditarUsuariosGruposPermissoes()) {
+	    permissoesModel.add(souzaFoodLinks.linkToGrupoPermissaoAssociacao(grupoId, "associar"));
 	    
 	    permissoesModel.getContent().forEach(permissaoModel -> {
 	        permissaoModel.add(souzaFoodLinks.linkToGrupoPermissaoDesassociacao(
 	                grupoId, permissaoModel.getId(), "desassociar"));
-	    });
+	       });
+	    
+	    }
 	    
 	    return permissoesModel;
 	}    

@@ -6,7 +6,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import com.souza.souzafood.api.v1.SouzaFoodLinks;
+import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.controller.EstadoController;
 import com.souza.souzafood.api.v1.model.EstadoModel;
 import com.souza.souzafood.domain.model.Estado;
@@ -19,7 +19,7 @@ public class EstadoModelAssembler
 	private ModelMapper modelMapper;
 	
 	@Autowired
-	private SouzaFoodLinks souzaFoodLinks;
+	private SouzaLinks souzaFoodLinks;
 	
 	   public EstadoModelAssembler() {
 	        super(EstadoController.class, EstadoModel.class);
