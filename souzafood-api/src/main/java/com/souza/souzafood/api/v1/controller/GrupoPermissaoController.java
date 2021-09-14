@@ -34,7 +34,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 	private PermissaoModelAssembler permissaoModelAssembler;
 	    
 	@Autowired
-	private SouzaLinks souzaFoodLinks;
+	private SouzaLinks souzaLinks;
 	
 	@Autowired
 	private SouzaSecurity souzaSecurity;   
@@ -49,13 +49,13 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 	        = permissaoModelAssembler.toCollectionModel(grupo.getPermissoes())
 	            .removeLinks();
 	    
-	    permissoesModel.add(souzaFoodLinks.linkToGrupoPermissoes(grupoId));
+	    permissoesModel.add(souzaLinks.linkToGrupoPermissoes(grupoId));
 
 	    if (souzaSecurity.podeEditarUsuariosGruposPermissoes()) {
-	    permissoesModel.add(souzaFoodLinks.linkToGrupoPermissaoAssociacao(grupoId, "associar"));
+	    permissoesModel.add(souzaLinks.linkToGrupoPermissaoAssociacao(grupoId, "associar"));
 	    
 	    permissoesModel.getContent().forEach(permissaoModel -> {
-	        permissaoModel.add(souzaFoodLinks.linkToGrupoPermissaoDesassociacao(
+	        permissaoModel.add(souzaLinks.linkToGrupoPermissaoDesassociacao(
 	                grupoId, permissaoModel.getId(), "desassociar"));
 	       });
 	    

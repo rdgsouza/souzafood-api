@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.controller.EstadoController;
 import com.souza.souzafood.api.v1.model.EstadoModel;
+import com.souza.souzafood.core.security.SouzaSecurity;
 import com.souza.souzafood.domain.model.Estado;
 
 @Component
@@ -19,7 +20,10 @@ public class EstadoModelAssembler
 	private ModelMapper modelMapper;
 	
 	@Autowired
-	private SouzaLinks souzaFoodLinks;
+	private SouzaLinks souzaLinks;
+	
+	@Autowired
+	private SouzaSecurity souzaSecurity;    
 	
 	   public EstadoModelAssembler() {
 	        super(EstadoController.class, EstadoModel.class);
@@ -30,15 +34,22 @@ public class EstadoModelAssembler
 	       EstadoModel estadoModel = createModelWithId(estado.getId(), estado);
 	       modelMapper.map(estado, estadoModel);
 	       
-	       estadoModel.add(souzaFoodLinks.linkToEstados("estados"));
+	       if (souzaSecurity.podeConsultarEstados()) {
+	           estadoModel.add(souzaLinks.linkToEstados("estados"));
+	       }
 	       
 	       return estadoModel;
 	   }
 
 	   @Override
 	   public CollectionModel<EstadoModel> toCollectionModel(Iterable<? extends Estado> entities) {
-	       return super.toCollectionModel(entities)
-	           .add(souzaFoodLinks.linkToEstados());
-	   }               
+	       CollectionModel<EstadoModel> collectionModel = super.toCollectionModel(entities);
+	       
+	       if (souzaSecurity.podeConsultarEstados()) {
+	           collectionModel.add(souzaLinks.linkToEstados());
+	       }
+	       
+	       return collectionModel;
+	   }
 	
 }

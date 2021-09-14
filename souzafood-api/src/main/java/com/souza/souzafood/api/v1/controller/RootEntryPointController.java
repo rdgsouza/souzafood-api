@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.souza.souzafood.api.v1.SouzaLinks;
+import com.souza.souzafood.core.security.SouzaSecurity;
 
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -17,25 +18,51 @@ import springfox.documentation.annotations.ApiIgnore;
 public class RootEntryPointController {
 
 	@Autowired
-	private SouzaLinks souzaFoodLinks;
+	private SouzaLinks souzaLinks;
 
+	@Autowired
+	private SouzaSecurity souzaSecurity;    
+	
 //	https://app.algaworks.com/aulas/2191/implementando-o-root-entry-point-da-api
 	@GetMapping
 	public RootEntryPointModel root() {
-		var rootEntryPointModel = new RootEntryPointModel();
-
-		rootEntryPointModel.add(souzaFoodLinks.linkToCozinhas("cozinhas"));
-		rootEntryPointModel.add(souzaFoodLinks.linkToPedidos("pedidos"));
-		rootEntryPointModel.add(souzaFoodLinks.linkToRestaurantes("restaurantes"));
-		rootEntryPointModel.add(souzaFoodLinks.linkToGrupos("grupos"));
-		rootEntryPointModel.add(souzaFoodLinks.linkToUsuarios("usuarios"));
-		rootEntryPointModel.add(souzaFoodLinks.linkToPermissoes("permissoes"));
-		rootEntryPointModel.add(souzaFoodLinks.linkToFormasPagamento("formas-pagamentos"));
-		rootEntryPointModel.add(souzaFoodLinks.linkToEstados("estados"));
-		rootEntryPointModel.add(souzaFoodLinks.linkToCidades("cidades"));
-		rootEntryPointModel.add(souzaFoodLinks.linkToEstatisticas("estatisticas"));
-
-		return rootEntryPointModel;
+	    var rootEntryPointModel = new RootEntryPointModel();
+	    
+	    if (souzaSecurity.podeConsultarCozinhas()) {
+	        rootEntryPointModel.add(souzaLinks.linkToCozinhas("cozinhas"));
+	    }
+	    
+	    if (souzaSecurity.podePesquisarPedidos()) {
+	        rootEntryPointModel.add(souzaLinks.linkToPedidos("pedidos"));
+	    }
+	    
+	    if (souzaSecurity.podeConsultarRestaurantes()) {
+	        rootEntryPointModel.add(souzaLinks.linkToRestaurantes("restaurantes"));
+	    }
+	    
+	    if (souzaSecurity.podeConsultarUsuariosGruposPermissoes()) {
+	        rootEntryPointModel.add(souzaLinks.linkToGrupos("grupos"));
+	        rootEntryPointModel.add(souzaLinks.linkToUsuarios("usuarios"));
+	        rootEntryPointModel.add(souzaLinks.linkToPermissoes("permissoes"));
+	    }
+	    
+	    if (souzaSecurity.podeConsultarFormasPagamento()) {
+	        rootEntryPointModel.add(souzaLinks.linkToFormasPagamento("formas-pagamento"));
+	    }
+	    
+	    if (souzaSecurity.podeConsultarEstados()) {
+	        rootEntryPointModel.add(souzaLinks.linkToEstados("estados"));
+	    }
+	    
+	    if (souzaSecurity.podeConsultarCidades()) {
+	        rootEntryPointModel.add(souzaLinks.linkToCidades("cidades"));
+	    }
+	    
+	    if (souzaSecurity.podeConsultarEstatisticas()) {
+	        rootEntryPointModel.add(souzaLinks.linkToEstatisticas("estatisticas"));
+	    }
+	    
+	    return rootEntryPointModel;
 	}
 
 	private static class RootEntryPointModel extends RepresentationModel<RootEntryPointModel> {

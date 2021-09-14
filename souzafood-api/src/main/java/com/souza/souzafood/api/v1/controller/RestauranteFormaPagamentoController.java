@@ -18,6 +18,7 @@ import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.assembler.FormaPagamentoModelAssembler;
 import com.souza.souzafood.api.v1.model.FormaPagamentoModel;
 import com.souza.souzafood.core.security.CheckSecurity;
+import com.souza.souzafood.core.security.SouzaSecurity;
 import com.souza.souzafood.domain.model.Restaurante;
 import com.souza.souzafood.domain.service.CadastroRestauranteService;
 
@@ -33,26 +34,33 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 	private FormaPagamentoModelAssembler formaPagamentoModelAssembler;
 
 	@Autowired
-	private SouzaLinks souzaFoodLinks;
+	private SouzaLinks souzaLinks;
+	
+	@Autowired
+	private SouzaSecurity souzaSecurity;   
 	
 	@CheckSecurity.Restaurantes.PodeConsultar
 	@Override
 	@GetMapping
 	public CollectionModel<FormaPagamentoModel> listar(@PathVariable Long restauranteId) {
-		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
-		
-		CollectionModel<FormaPagamentoModel> formasPagamentoModel 
-			= formaPagamentoModelAssembler.toCollectionModel(restaurante.getFormasPagamento())
-				.removeLinks()
-				.add(souzaFoodLinks.linkToRestauranteFormasPagamento(restauranteId))
-				.add(souzaFoodLinks.linkToRestauranteFormaPagamentoAssociacao(restauranteId, "associar"));
-		
-		formasPagamentoModel.getContent().forEach(formaPagamentoModel -> {
-			formaPagamentoModel.add(souzaFoodLinks.linkToRestauranteFormaPagamentoDesassociacao(
-					restauranteId, formaPagamentoModel.getId(), "desassociar"));
-		});
-		
-		return formasPagamentoModel;
+	    Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
+	    
+	    CollectionModel<FormaPagamentoModel> formasPagamentoModel 
+	        = formaPagamentoModelAssembler.toCollectionModel(restaurante.getFormasPagamento())
+	            .removeLinks();
+	    
+	    formasPagamentoModel.add(souzaLinks.linkToRestauranteFormasPagamento(restauranteId));
+
+	    if (souzaSecurity.podeGerenciarFuncionamentoRestaurantes(restauranteId)) {
+	        formasPagamentoModel.add(souzaLinks.linkToRestauranteFormaPagamentoAssociacao(restauranteId, "associar"));
+	        
+	        formasPagamentoModel.getContent().forEach(formaPagamentoModel -> {
+	            formaPagamentoModel.add(souzaLinks.linkToRestauranteFormaPagamentoDesassociacao(
+	                    restauranteId, formaPagamentoModel.getId(), "desassociar"));
+	        });
+	    }
+	    
+	    return formasPagamentoModel;
 	}
 	
 	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento

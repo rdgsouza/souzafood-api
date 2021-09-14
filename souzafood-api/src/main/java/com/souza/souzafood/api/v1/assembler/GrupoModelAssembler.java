@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.controller.GrupoController;
 import com.souza.souzafood.api.v1.model.GrupoModel;
+import com.souza.souzafood.core.security.SouzaSecurity;
 import com.souza.souzafood.domain.model.Grupo;
 
 @Component
@@ -19,7 +20,11 @@ public class GrupoModelAssembler
     private ModelMapper modelMapper;
     
     @Autowired
-    private SouzaLinks souzaFoodLinks;
+    private SouzaLinks souzaLinks;
+    
+    @Autowired
+    private SouzaSecurity souzaSecurity;
+    
     
     public GrupoModelAssembler() {
         super(GrupoController.class, GrupoModel.class);
@@ -30,16 +35,23 @@ public class GrupoModelAssembler
         GrupoModel grupoModel = createModelWithId(grupo.getId(), grupo);
         modelMapper.map(grupo, grupoModel);
         
-        grupoModel.add(souzaFoodLinks.linkToGrupos("grupos"));
-        
-        grupoModel.add(souzaFoodLinks.linkToGrupoPermissoes(grupo.getId(), "permissoes"));
+        if (souzaSecurity.podeConsultarUsuariosGruposPermissoes()) {
+            grupoModel.add(souzaLinks.linkToGrupos("grupos"));
+            
+            grupoModel.add(souzaLinks.linkToGrupoPermissoes(grupo.getId(), "permissoes"));
+        }
         
         return grupoModel;
     }
-    
+
     @Override
     public CollectionModel<GrupoModel> toCollectionModel(Iterable<? extends Grupo> entities) {
-        return super.toCollectionModel(entities)
-                .add(souzaFoodLinks.linkToGrupos());
+        CollectionModel<GrupoModel> collectionModel = super.toCollectionModel(entities);
+        
+        if (souzaSecurity.podeConsultarUsuariosGruposPermissoes()) {
+            collectionModel.add(souzaLinks.linkToGrupos());
+        }
+        
+        return collectionModel;
     }            
 }        

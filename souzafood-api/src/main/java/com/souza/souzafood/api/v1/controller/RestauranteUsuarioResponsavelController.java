@@ -18,6 +18,7 @@ import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.assembler.UsuarioModelAssembler;
 import com.souza.souzafood.api.v1.model.UsuarioModel;
 import com.souza.souzafood.core.security.CheckSecurity;
+import com.souza.souzafood.core.security.SouzaSecurity;
 import com.souza.souzafood.domain.model.Restaurante;
 import com.souza.souzafood.domain.service.CadastroRestauranteService;
 
@@ -26,7 +27,6 @@ import com.souza.souzafood.domain.service.CadastroRestauranteService;
 produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteUsuarioResponsavelController implements RestauranteUsuarioResponsavelControllerOpenApi {
 
-
 	@Autowired
 	private CadastroRestauranteService cadastroRestaurante;
 
@@ -34,9 +34,12 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 	private UsuarioModelAssembler usuarioModelAssembler;
 
 	@Autowired
-	private SouzaLinks souzaFoodLinks;
+	private SouzaLinks souzaLinks;
+
+	@Autowired
+	private SouzaSecurity souzaSecurity;    
 	
-	@CheckSecurity.Restaurantes.PodeConsultar
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@Override
 	@GetMapping
 	public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
@@ -44,14 +47,18 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 	    
 	    CollectionModel<UsuarioModel> usuariosModel = usuarioModelAssembler
 	            .toCollectionModel(restaurante.getResponsaveis())
-	                .removeLinks()
-	                .add(souzaFoodLinks.linkToRestauranteResponsaveis(restauranteId))
-	                .add(souzaFoodLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar"));
+	            .removeLinks();
+	    
+	    usuariosModel.add(souzaLinks.linkToRestauranteResponsaveis(restauranteId));
+	    
+	    if (souzaSecurity.podeGerenciarCadastroRestaurantes()) {
+	        usuariosModel.add(souzaLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar"));
 
-	    usuariosModel.getContent().stream().forEach(usuarioModel -> {
-	        usuarioModel.add(souzaFoodLinks.linkToRestauranteResponsavelDesassociacao(
-	                restauranteId, usuarioModel.getId(), "desassociar"));
-	    });
+	        usuariosModel.getContent().stream().forEach(usuarioModel -> {
+	            usuarioModel.add(souzaLinks.linkToRestauranteResponsavelDesassociacao(
+	                    restauranteId, usuarioModel.getId(), "desassociar"));
+	        });
+	    }
 	    
 	    return usuariosModel;
 	}

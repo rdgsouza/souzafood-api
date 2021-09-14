@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.controller.CidadeController;
 import com.souza.souzafood.api.v1.model.CidadeModel;
+import com.souza.souzafood.core.security.SouzaSecurity;
 import com.souza.souzafood.domain.model.Cidade;
 
 @Component
@@ -19,7 +20,10 @@ public class CidadeModelAssembler extends
 	private ModelMapper modelMapper;
 
 	@Autowired
-	private SouzaLinks souzaFoodLinks;
+	private SouzaLinks souzaLinks;
+	
+	@Autowired
+	private SouzaSecurity souzaSecurity;    
 	
 	public CidadeModelAssembler() {
 
@@ -32,17 +36,26 @@ public class CidadeModelAssembler extends
 	    
 	    modelMapper.map(cidade, cidadeModel);
 	    
-	    cidadeModel.add(souzaFoodLinks.linkToCidades("cidades"));
+	    if (souzaSecurity.podeConsultarCidades()) {
+	        cidadeModel.add(souzaLinks.linkToCidades("cidades"));
+	    }
 	    
-	    cidadeModel.getEstado().add(souzaFoodLinks.linkToEstado(cidadeModel.getEstado().getId()));
+	    if (souzaSecurity.podeConsultarEstados()) {
+	        cidadeModel.getEstado().add(souzaLinks.linkToEstado(cidadeModel.getEstado().getId()));
+	    }
 	    
 	    return cidadeModel;
 	}
 
 	@Override
 	public CollectionModel<CidadeModel> toCollectionModel(Iterable<? extends Cidade> entities) {
-	    return super.toCollectionModel(entities)
-	            .add(souzaFoodLinks.linkToCidades());
+	    CollectionModel<CidadeModel> collectionModel = super.toCollectionModel(entities);
+	    
+	    if (souzaSecurity.podeConsultarCidades()) {
+	        collectionModel.add(souzaLinks.linkToCidades());
+	    }
+	    
+	    return collectionModel;
 	}
 	
 //	public List<CidadeModel> toCollectionModel(List<Cidade> cidades) {

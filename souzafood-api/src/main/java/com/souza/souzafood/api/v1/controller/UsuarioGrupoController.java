@@ -18,6 +18,7 @@ import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.assembler.GrupoModelAssembler;
 import com.souza.souzafood.api.v1.model.GrupoModel;
 import com.souza.souzafood.core.security.CheckSecurity;
+import com.souza.souzafood.core.security.SouzaSecurity;
 import com.souza.souzafood.domain.model.Usuario;
 import com.souza.souzafood.domain.service.CadastroUsuarioService;
 
@@ -33,7 +34,10 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
 	private GrupoModelAssembler grupoModelAssembler;
 
 	@Autowired
-	private SouzaLinks souzaFoodLinks;
+	private SouzaLinks souzaLinks;
+	
+	@Autowired
+	private SouzaSecurity souzaSecurity;   
 	
 	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@Override
@@ -42,13 +46,16 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
 	    Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
 	    
 	    CollectionModel<GrupoModel> gruposModel = grupoModelAssembler.toCollectionModel(usuario.getGrupos())
-	            .removeLinks()
-	            .add(souzaFoodLinks.linkToUsuarioGrupoAssociacao(usuarioId, "associar"));
+	            .removeLinks();
 	    
-	    gruposModel.getContent().forEach(grupoModel -> {
-	        grupoModel.add(souzaFoodLinks.linkToUsuarioGrupoDesassociacao(
-	                usuarioId, grupoModel.getId(), "desassociar"));
-	    });
+	    if (souzaSecurity.podeEditarUsuariosGruposPermissoes()) {
+	        gruposModel.add(souzaLinks.linkToUsuarioGrupoAssociacao(usuarioId, "associar"));
+	        
+	        gruposModel.getContent().forEach(grupoModel -> {
+	            grupoModel.add(souzaLinks.linkToUsuarioGrupoDesassociacao(
+	                    usuarioId, grupoModel.getId(), "desassociar"));
+	        });
+	    }
 	    
 	    return gruposModel;
 	}   

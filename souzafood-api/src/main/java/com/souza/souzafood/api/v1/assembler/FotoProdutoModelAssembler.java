@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.controller.RestauranteProdutoFotoController;
 import com.souza.souzafood.api.v1.model.FotoProdutoModel;
+import com.souza.souzafood.core.security.SouzaSecurity;
 import com.souza.souzafood.domain.model.FotoProduto;
 
 @Component
@@ -18,7 +19,10 @@ public class FotoProdutoModelAssembler
     private ModelMapper modelMapper;
     
     @Autowired
-    private SouzaLinks souzaFoodLinks;
+    private SouzaLinks souzaLinks;
+    
+    @Autowired
+    private SouzaSecurity souzaSecurity;    
     
     public FotoProdutoModelAssembler() {
         super(RestauranteProdutoFotoController.class, FotoProdutoModel.class);
@@ -28,12 +32,16 @@ public class FotoProdutoModelAssembler
     public FotoProdutoModel toModel(FotoProduto foto) {
         FotoProdutoModel fotoProdutoModel = modelMapper.map(foto, FotoProdutoModel.class);
         
-        fotoProdutoModel.add(souzaFoodLinks.linkToFotoProduto(
-                foto.getRestauranteId(), foto.getProduto().getId()));
-        
-        fotoProdutoModel.add(souzaFoodLinks.linkToProduto(
-                foto.getRestauranteId(), foto.getProduto().getId(), "produto"));
+        // Quem pode consultar restaurantes, também pode consultar os produtos e fotos
+        if (souzaSecurity.podeConsultarRestaurantes()) {
+            fotoProdutoModel.add(souzaLinks.linkToFotoProduto(
+                    foto.getRestauranteId(), foto.getProduto().getId()));
+            
+            fotoProdutoModel.add(souzaLinks.linkToProduto(
+                    foto.getRestauranteId(), foto.getProduto().getId(), "produto"));
+        }
         
         return fotoProdutoModel;
-    }   
+    }
+ 
 }
