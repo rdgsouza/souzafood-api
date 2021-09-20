@@ -1,5 +1,7 @@
 package com.souza.souzafood.core.security.authorizationserver;
 
+import java.security.KeyPair;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
 
 import javax.sql.DataSource;
@@ -22,6 +24,11 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.KeyUse;
+import com.nimbusds.jose.jwk.RSAKey;
 
 @Configuration
 @EnableAuthorizationServer
@@ -116,23 +123,39 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		
 		return approvalStore;
 	}
+
+//	https://app.algaworks.com/aulas/3626/implementando-o-endpoint-do-json-web-key-set-jwks
+	@Bean
+	public JWKSet jwtSet() {
+
+		RSAKey.Builder builder = new RSAKey.Builder((RSAPublicKey) keyPair().getPublic()) 
+				.keyUse(KeyUse.SIGNATURE)
+				.algorithm(JWSAlgorithm.RS256)
+				.keyID("souzafood-key-id");
+		
+		return new JWKSet(builder.build());
+	}
 	
 	@Bean
 	public JwtAccessTokenConverter jwtAccessTokenConverter() {
 		var jwtAccessTokenConverter = new JwtAccessTokenConverter();
 	//	jwtAccessTokenConverter.setSigningKey("KJNFUHWKFWKF98723721NQDLQNDQDJ81UNLDNadasldnasldnladas123"); Aula: https://app.algaworks.com/aulas/2260/configurando-o-resource-server-para-jwt-assinado-com-chave-simetrica
+		
+		jwtAccessTokenConverter.setKeyPair(keyPair());
+		
+		return jwtAccessTokenConverter;
+    }
 	
+//	https://app.algaworks.com/aulas/3626/implementando-o-endpoint-do-json-web-key-set-jwks
+	private KeyPair keyPair() {
 		var keyStorePass = jwtKeyStoreProperties.getPassword();
 		var keyPairAlias = jwtKeyStoreProperties.getKeypairAlias();
 		
 		var keyStoreKeyFactory = new KeyStoreKeyFactory( //Foi refatoração no KeyStoreKeyFactory Aula:https://app.algaworks.com/aulas/2295/juntando-o-resource-server-com-o-authorization-server-no-mesmo-projeto
 				jwtKeyStoreProperties.getJksLocation(), keyStorePass.toCharArray());
-		var keyPair = keyStoreKeyFactory.getKeyPair(keyPairAlias);
-		
-		jwtAccessTokenConverter.setKeyPair(keyPair);
-		
-		return jwtAccessTokenConverter;
-    }
+		return keyStoreKeyFactory.getKeyPair(keyPairAlias);
+	
+	}
 	
 	private TokenGranter tokenGranter(AuthorizationServerEndpointsConfigurer endpoints) {
 		var pkceAuthorizationCodeTokenGranter = new PkceAuthorizationCodeTokenGranter(endpoints.getTokenServices(),

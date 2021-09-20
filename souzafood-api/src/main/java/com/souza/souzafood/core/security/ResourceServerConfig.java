@@ -24,10 +24,10 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		    .formLogin()
+		    .formLogin().loginPage("/login")
 		    .and()
 		    .authorizeRequests()
-		        .antMatchers("/oauth/**").authenticated()
+		        .antMatchers("/oauth/**").authenticated() //https://app.algaworks.com/aulas/2295/juntando-o-resource-server-com-o-authorization-server-no-mesmo-projeto
 		        .and()
 		    .csrf().disable() // Sobre o metodo .csrf() Aula: https://app.algaworks.com/aulas/2230/configurando-spring-security-com-http-basic
 	                                                      // Aula: https://app.algaworks.com/aulas/1490/implementando-autenticacao-basic
