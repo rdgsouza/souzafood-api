@@ -16,11 +16,21 @@ services:
       - souzafood-network
 
   souzafood-api:
-    image: souzafood-api
-    command: ["/wait-for-it.sh", "souzafood-mysql:3306", "-t", "300", "--", "java", "-jar", "api.jar"]
-    environment:
+   image: souzafood-api
+   command: ["/wait-for-it.sh", "souzafood-mysql:3306", "-t", "300", "--", "java", "-jar", "api.jar"]
+   environment:
       DB_HOST: souzafood-mysql
+   networks:
+      - souzafood-network
+   depends_on:
+      - souzafood-mysql
+      
+  souzafood-proxy:
+    build: ./nginx
+    image: souzafood-proxy
+    ports:
+      - "80:80"
     networks:
       - souzafood-network
     depends_on:
-      - souzafood-mysql
+      - souzafood-api
