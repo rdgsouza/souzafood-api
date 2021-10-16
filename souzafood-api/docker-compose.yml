@@ -15,11 +15,18 @@ services:
     networks:
       - souzafood-network
 
+  souzafood-redis:
+     image: redis:6.2.1-alpine
+     networks:
+     - souzafood-network
+
   souzafood-api:
    image: souzafood-api
    command: ["/wait-for-it.sh", "souzafood-mysql:3306", "-t", "300", "--", "java", "-jar", "api.jar"]
    environment:
       DB_HOST: souzafood-mysql
+      SPRING_SESSION_STORE_TYPE: redis
+      SPRING_REDIS_HOST: souzafood-redis
    networks:
       - souzafood-network
    depends_on:
