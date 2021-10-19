@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
+import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
@@ -52,6 +53,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 //    Configuracao do cliente no banco de dados usando o metodo jdbc 
+//	  https://app.algaworks.com/aulas/2290/configurando-os-clientes-oauth2-em-um-banco-de-dados-sql
 		clients.jdbc(dataSource); 
 	}
 	
@@ -109,6 +111,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		endpoints
 		     .authenticationManager(authenticationManager)
 		     .userDetailsService(userDetailsService)
+//		     https://app.algaworks.com/aulas/3648/resolvendo-problemas-com-storage-de-authorization-codes
+		     .authorizationCodeServices(new JdbcAuthorizationCodeServices(this.dataSource))
 		     .reuseRefreshTokens(false)
 		     .accessTokenConverter(jwtAccessTokenConverter())
 		     .tokenEnhancer(enhancerChain)
