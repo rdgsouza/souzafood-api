@@ -11,7 +11,7 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
-      - "3306:3306"
+      - "13306:3306"
     networks:
       - souzafood-network
 
@@ -27,6 +27,7 @@ services:
       DB_HOST: souzafood-mysql
       SPRING_SESSION_STORE_TYPE: redis
       SPRING_REDIS_HOST: souzafood-redis
+      SPRING_PROFILES_ACTIVE: development
    networks:
       - souzafood-network
    depends_on:
