@@ -99,7 +99,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 		} catch (EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}
-	}
+	} 
 
 	@CheckSecurity.Cidades.PodeEditar
 	@Override
