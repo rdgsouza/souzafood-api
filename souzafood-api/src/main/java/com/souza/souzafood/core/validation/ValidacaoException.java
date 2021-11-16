@@ -11,6 +11,8 @@ public class ValidacaoException extends RuntimeException {
 	
 	private static final long serialVersionUID = 1L;
 	
+//	https://app.algaworks.com/aulas/1967/executando-processo-de-validacao-programaticamente
+	
 	private BindingResult bindingResult;
 	
 	

@@ -22,6 +22,7 @@ import javax.validation.constraints.PositiveOrZero;
 @PositiveOrZero
 public @interface TaxaFrete {
 
+//	https://app.algaworks.com/aulas/1963/criando-constraints-de-validacao-customizadas-usando-composicao
 	@OverridesAttribute(constraint = PositiveOrZero.class, name = "message")
 	String message() default "{TaxaFrete.invalida}";
 
