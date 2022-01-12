@@ -37,7 +37,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
-
+ 
 	@Autowired
 	private CidadeModelAssembler cidadeModelAssembler;
 	

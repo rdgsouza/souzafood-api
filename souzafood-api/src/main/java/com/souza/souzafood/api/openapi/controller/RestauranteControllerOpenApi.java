@@ -9,7 +9,7 @@ import com.souza.souzafood.api.exceptionhandler.Problem;
 import com.souza.souzafood.api.model.input.RestauranteInput;
 import com.souza.souzafood.api.v1.model.RestauranteApenasNomeModel;
 import com.souza.souzafood.api.v1.model.RestauranteBasicoModel;
-import com.souza.souzafood.api.v1.model.RestauranteModel;
+import com.souza.souzafood.api.v1.model.ControleCobrancaModel;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -40,7 +40,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(code = 400, message = "ID do restaurante inválido", response = Problem.class),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-    public RestauranteModel buscar(
+    public ControleCobrancaModel buscar(
             @ApiParam(value = "ID de um restaurante", example = "1", required = true)
             Long restauranteId);
     
@@ -48,7 +48,7 @@ public interface RestauranteControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 201, message = "Restaurante cadastrado"),
     })
-    public RestauranteModel adicionar(
+    public ControleCobrancaModel adicionar(
             @ApiParam(name = "corpo", value = "Representação de um novo restaurante", required = true)
             RestauranteInput restauranteInput);
     
@@ -57,7 +57,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(code = 200, message = "Restaurante atualizado"),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-    public RestauranteModel atualizar(
+    public ControleCobrancaModel atualizar(
             @ApiParam(value = "ID de um restaurante", example = "1", required = true)
             Long restauranteId,
             

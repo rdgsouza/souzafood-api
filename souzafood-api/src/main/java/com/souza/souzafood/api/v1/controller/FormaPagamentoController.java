@@ -85,7 +85,6 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 //        		.cacheControl(CacheControl.noStore())
         		.eTag(eTag) //Metodo para adicionar o eTag no cabeçalho da respospa http. Aula: https://www.algaworks.com/aulas/2114/implementando-requisicoes-condicionais-com-deep-etags
         		.body(formasPagamentosModel);
-        		
     }
     
     @CheckSecurity.FormasPagamento.PodeConsultar

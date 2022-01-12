@@ -70,6 +70,7 @@ public class EmissaoPedidoService {
 		}
 	}
 
+//	https://app.algaworks.com/forum/topicos/84104/erro-ao-repetir-produtos-na-lista-de-itens
 	private void normalizarItens(Pedido pedido) {
 		List<ItemPedido> itensNormalizados = new ArrayList<>();
 

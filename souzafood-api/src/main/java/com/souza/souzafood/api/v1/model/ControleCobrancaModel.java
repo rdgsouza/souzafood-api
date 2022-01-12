@@ -12,7 +12,7 @@ import lombok.Setter;
 @Relation(collectionRelation = "restaurantes")
 @Setter
 @Getter
-public class RestauranteModel extends RepresentationModel<RestauranteModel> {
+public class ControleCobrancaModel extends RepresentationModel<ControleCobrancaModel> {
     
 	@ApiModelProperty(example = "1")
 //	@JsonView({ RestauranteView.Resumo.class, RestauranteView.ApenasNome.class })

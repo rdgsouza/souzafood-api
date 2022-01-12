@@ -1,4 +1,4 @@
-	package com.souza.souzafood.core.modelmapper;
+package com.souza.souzafood.core.modelmapper;
 
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -17,6 +17,9 @@ import com.souza.souzafood.domain.model.Endereco;
 import com.souza.souzafood.domain.model.FotoProduto;
 import com.souza.souzafood.domain.model.ItemPedido;
 
+//https://app.algaworks.com/aulas/2001/customizando-o-mapeamento-de-propriedades-com-modelmapper
+//https://app.algaworks.com/aulas/2002/mapeando-para-uma-instancia-destino-e-nao-um-tipo-com-modelmapper
+//https://app.algaworks.com/aulas/2012/adicionando-endereco-no-modelo-da-representacao-do-recurso-de-restaurante
 @Configuration
 public class ModelMapperConfig {
 
@@ -41,7 +44,7 @@ public class ModelMapperConfig {
 
 //Na classe ItemPedidoInput temos a propiedade produtoId o que acontece é que na hora de fazer a cópia
 //dessa propiedade para entidade ItemPedido ele é atribuido a propiedade id da entidade ItemPedido
-//pelo fato de modelMapper usar a estrateia padrão de correspondência ele acaba achando que é para ser atribuido		
+//pelo fato de modelMapper usar a estrategia padrão de correspondência ele acaba achando que é para ser atribuido		
 //ai vai dar uma exception dando um problema falando que não pode salvar um detached item pedido. Ou seja um itemPedido desanexado
 //E ta errado porque o id do itemPedido é AUTO INCREMENT. Então nos atribuimos um id para propiedade produtoId da classe ItemPedidoInput 
 //mas não podemos deixar que o modellMapper intenda que é o id itemPedido e tentar atribuir na hora hora da copia

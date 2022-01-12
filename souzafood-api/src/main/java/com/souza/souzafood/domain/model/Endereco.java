@@ -27,7 +27,7 @@ public class Endereco {
 	@Column(name = "endereco_bairro")
 	private String bairro;
 	
-//	@JsonIgnoreProperties("hibernateLazyInitializer")
+//	@JsonIgnoreProperties("hibernateLazyInitializer") Aula: https://app.algaworks.com/aulas/1905/alterando-a-estrategia-de-fetching-para-lazy-loading
 	@ManyToOne(fetch = FetchType.LAZY)	
 	@JoinColumn(name = "endereco_cidade_id")
 	private Cidade cidade;
