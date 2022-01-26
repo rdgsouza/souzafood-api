@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 
 import com.souza.souzafood.api.v1.SouzaLinks;
 import com.souza.souzafood.api.v1.controller.RestauranteController;
-import com.souza.souzafood.api.v1.model.ControleCobrancaModel;
+import com.souza.souzafood.api.v1.model.RestauranteModel;
 import com.souza.souzafood.core.security.SouzaSecurity;
 import com.souza.souzafood.domain.model.Restaurante;
 
 @Component
 public class RestauranteModelAssembler 
-        extends RepresentationModelAssemblerSupport<Restaurante, ControleCobrancaModel> {
+        extends RepresentationModelAssemblerSupport<Restaurante, RestauranteModel> {
 
     @Autowired
     private ModelMapper modelMapper;
@@ -27,12 +27,12 @@ public class RestauranteModelAssembler
 
     
     public RestauranteModelAssembler() {
-        super(RestauranteController.class, ControleCobrancaModel.class);
+        super(RestauranteController.class, RestauranteModel.class);
     }
     
     @Override
-    public ControleCobrancaModel toModel(Restaurante restaurante) {
-        ControleCobrancaModel restauranteModel = createModelWithId(restaurante.getId(), restaurante);
+    public RestauranteModel toModel(Restaurante restaurante) {
+        RestauranteModel restauranteModel = createModelWithId(restaurante.getId(), restaurante);
         modelMapper.map(restaurante, restauranteModel);
         
         if (souzaSecurity.podeConsultarRestaurantes()) {
@@ -94,8 +94,8 @@ public class RestauranteModelAssembler
     }
 
     @Override
-    public CollectionModel<ControleCobrancaModel> toCollectionModel(Iterable<? extends Restaurante> entities) {
-        CollectionModel<ControleCobrancaModel> collectionModel = super.toCollectionModel(entities);
+    public CollectionModel<RestauranteModel> toCollectionModel(Iterable<? extends Restaurante> entities) {
+        CollectionModel<RestauranteModel> collectionModel = super.toCollectionModel(entities);
         
         if (souzaSecurity.podeConsultarRestaurantes()) {
             collectionModel.add(souzaLinks.linkToRestaurantes());

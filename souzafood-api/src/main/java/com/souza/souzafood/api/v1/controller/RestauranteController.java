@@ -28,7 +28,7 @@ import com.souza.souzafood.api.v1.model.RestauranteApenasNomeModel;
 import com.souza.souzafood.api.v1.model.RestauranteApenasNomeModelAssembler;
 import com.souza.souzafood.api.v1.model.RestauranteBasicoModel;
 import com.souza.souzafood.api.v1.model.RestauranteBasicoModelAssembler;
-import com.souza.souzafood.api.v1.model.ControleCobrancaModel;
+import com.souza.souzafood.api.v1.model.RestauranteModel;
 import com.souza.souzafood.core.security.CheckSecurity;
 import com.souza.souzafood.domain.exception.CidadeNaoEncontradaException;
 import com.souza.souzafood.domain.exception.CozinhaNaoEncontradaException;
@@ -118,7 +118,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 	
 	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping("/{restauranteId}")
-	public ControleCobrancaModel buscar(@PathVariable Long restauranteId) {
+	public RestauranteModel buscar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 		
 		return restauranteModelAssembler.toModel(restaurante);
@@ -127,7 +127,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ControleCobrancaModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
+	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
 			Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 			
@@ -139,7 +139,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
 	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@PutMapping("/{restauranteId}")
-	public ControleCobrancaModel atualizar(@PathVariable Long restauranteId, 
+	public RestauranteModel atualizar(@PathVariable Long restauranteId, 
 			@RequestBody @Valid RestauranteInput restauranteInput) {
 
 		try {
