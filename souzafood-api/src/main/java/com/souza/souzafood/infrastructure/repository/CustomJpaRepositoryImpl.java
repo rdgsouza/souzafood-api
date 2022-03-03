@@ -12,6 +12,8 @@ import com.souza.souzafood.domain.repository.CustomJpaRepository;
 public class CustomJpaRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID>
         implements CustomJpaRepository<T, ID> {
 
+//	Aula: https://app.algaworks.com/aulas/1884/implementando-um-repositorio-sdj-customizado
+	
 	private EntityManager manager;
 
 	public CustomJpaRepositoryImpl(JpaEntityInformation<T, ?> entityInformation, 

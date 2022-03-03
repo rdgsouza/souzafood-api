@@ -10,6 +10,7 @@ import com.souza.souzafood.core.io.Base64ProcolResolver;
 import com.souza.souzafood.infrastructure.repository.CustomJpaRepositoryImpl;
 
 @SpringBootApplication
+//Aula: https://app.algaworks.com/aulas/1884/implementando-um-repositorio-sdj-customizado
 @EnableJpaRepositories(repositoryBaseClass = CustomJpaRepositoryImpl.class)
 public class SouzafoodApiApplication {
 

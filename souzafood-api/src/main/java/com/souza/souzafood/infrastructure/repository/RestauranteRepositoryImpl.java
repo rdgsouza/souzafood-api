@@ -27,6 +27,8 @@ import com.souza.souzafood.domain.repository.RestauranteRepositoryQueries;
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries{
 
+//	Aula: https://app.algaworks.com/aulas/1884/implementando-um-repositorio-sdj-customizado
+	
 	@PersistenceContext
 	private EntityManager manager;
 	
