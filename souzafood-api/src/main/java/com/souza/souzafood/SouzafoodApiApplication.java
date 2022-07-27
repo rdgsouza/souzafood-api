@@ -15,6 +15,7 @@ import com.souza.souzafood.infrastructure.repository.CustomJpaRepositoryImpl;
 public class SouzafoodApiApplication {
 
 	public static void main(String[] args) {
+//		https://app.algaworks.com/aulas/1992/configurando-e-refatorando-o-projeto-para-usar-utc
 		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 
 //		https://app.algaworks.com/aulas/3627/externalizando-o-keystore-criando-um-protocolresolver-para-base64

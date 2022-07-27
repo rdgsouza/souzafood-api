@@ -15,6 +15,7 @@ public interface PedidoRepository extends CustomJpaRepository<Pedido, Long>,
 
 	Optional<Pedido> findByCodigo(String codigo);
 	
+//	Aula: https://app.algaworks.com/aulas/2026/otimizando-a-query-de-pedidos-e-retornando-model-resumido-na-listagem
 	@Override
 	@Query("from Pedido p join fetch p.cliente join fetch p.restaurante r join fetch r.cozinha")
 	List<Pedido> findAll();

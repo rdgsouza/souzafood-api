@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.souza.souzafood.domain.exception.EntidadeEmUsoException;
@@ -22,7 +21,10 @@ public class CadastroEstadoService {
 	@Autowired
 	private EstadoRepository estadoRepository;
 
-	@Transactional(propagation = Propagation.NOT_SUPPORTED)
+//	@Transactional(propagation = Propagation.NOT_SUPPORTED) OBS: Na anotacao @Transactional existem 
+//	escopos que podem ser passados para definir a forma como essa transacao ira trabalhar 
+//	Fonte: https://app.algaworks.com/forum/topicos/83398/duvida-com-transacao-no-sdj
+	@Transactional
 	public Estado salvar(Estado estado) {
 		return estadoRepository.save(estado);
 	}

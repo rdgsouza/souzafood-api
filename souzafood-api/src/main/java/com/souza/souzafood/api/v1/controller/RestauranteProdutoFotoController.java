@@ -57,6 +57,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	@Autowired
 	private FotoStorageService fotoStorage;
 	
+	// https://app.algaworks.com/aulas/2054/implementando-upload-de-arquivo-com-multipartform-data
 	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
 	@Override
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -65,13 +66,15 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 			@RequestPart(required = true) MultipartFile arquivo) throws IOException {
 
 		Produto produto = cadastroProduto.buscarOuFalhar(restauranteId, produtoId);
-
+		
 //		MultipartFile arquivo = fotoProdutoInput.getArquivo();
        		
 		FotoProduto foto = new FotoProduto();
 		foto.setProduto(produto);
 		foto.setDescricao(fotoProdutoInput.getDescricao());
-		foto.setContentType(arquivo.getContentType());
+		foto.setContentType(arquivo.getContentType()); //pega o tamanho do arquivo enviado no body da requisicao 
+//		mas pode usar o fotoProduto input para fazer isso tbm para remover a propiedade arquivo e deixar menos 
+//		argumentos no metodo
 		foto.setTamanho(arquivo.getSize());
 		foto.setNomeArquivo(arquivo.getOriginalFilename());
 		
