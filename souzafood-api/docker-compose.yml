@@ -1,0 +1,44 @@
+  
+version: "3.9"
+
+networks:
+  souzafood-network:
+    driver: bridge
+
+services:
+  souzafood-mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "13306:3306"
+    networks:
+      - souzafood-network
+
+  souzafood-redis:
+     image: redis:6.2.1-alpine
+     networks:
+     - souzafood-network
+
+  souzafood-api:
+   image: souzafood-api
+   command: ["/wait-for-it.sh", "souzafood-mysql:3306", "-t", "300", "--", "java", "-jar", "api.jar"]
+   environment:
+      DB_HOST: souzafood-mysql
+      SPRING_SESSION_STORE_TYPE: redis
+      SPRING_REDIS_HOST: souzafood-redis
+      SPRING_PROFILES_ACTIVE: development
+   networks:
+      - souzafood-network
+   depends_on:
+      - souzafood-mysql
+      
+  souzafood-proxy:
+    build: ./nginx
+    image: souzafood-proxy
+    ports:
+      - "80:80"
+    networks:
+      - souzafood-network
+    depends_on:
+      - souzafood-api
